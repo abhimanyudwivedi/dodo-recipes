@@ -120,6 +120,6 @@ Try it with a test-mode link first: <!-- TODO: test-mode Dodo payment link -->
 ## 7. Built and used at Zipply
 
 Zipply is a job-search concierge. Its founder sends personal emails to people job hunting, written
-about each person's own post, and this engine has sent them since 8 October 2026: each one at that
+about each person's own post, and the engine this recipe is rewritten from has sent them since 8 October 2026: each one at that
 person's morning, follow-ups in the original thread, and anyone who replied skipped automatically.
 The safety rules in part 5 come from building it.
