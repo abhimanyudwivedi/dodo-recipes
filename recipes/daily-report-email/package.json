@@ -1,0 +1,15 @@
+{
+  "name": "daily-report-email",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "One email each morning telling every paying customer what your product did for them yesterday. Gated on their Dodo subscription.",
+  "scripts": {
+    "preview": "node scripts/preview.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "postgres": "^3.4.4",
+    "standardwebhooks": "^1.0.0"
+  }
+}

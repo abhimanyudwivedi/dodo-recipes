@@ -1,0 +1,22 @@
+{
+  "name": "video-ad-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A 15-25 second vertical ad from one JSON file: every cut on the beat, original sound, hook variants in one command.",
+  "scripts": {
+    "audio": "node scripts/gen-audio.mjs",
+    "audit": "node scripts/audit.mjs",
+    "studio": "remotion studio src/index.ts",
+    "render": "node scripts/render.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.468",
+    "@remotion/renderer": "4.0.468",
+    "@remotion/bundler": "4.0.468",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "remotion": "4.0.468"
+  }
+}

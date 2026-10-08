@@ -1,0 +1,25 @@
+{
+  "product": "Ledgerly",
+  "url": "ledgerly.example.com",
+  "bpm": 120,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "colors": { "bg": "#f4f1ea", "ink": "#141414", "accent": "#ff5a36", "pop": ["#ffd9c7", "#d9d4ff", "#c9f2dc"] },
+  "facts": {
+    "invoices_chased": { "value": 41, "source": "demo account, Oct 2026" },
+    "hours_saved": { "value": 6, "source": "demo account, Oct 2026" }
+  },
+  "hooks": [
+    { "id": "late", "words": ["Clients", "paying", "late?"] },
+    { "id": "chasing", "words": ["Still", "chasing", "invoices?"] }
+  ],
+  "shots": [
+    { "beats": 6, "graphic": "hook" },
+    { "beats": 4, "graphic": "words", "line": "Meet Ledgerly", "words": ["Meet", "Ledgerly"], "accentLast": true },
+    { "beats": 4, "graphic": "counter", "line": "It chased 41 invoices this month", "fact": "invoices_chased", "label": "invoices chased this month" },
+    { "beats": 4, "graphic": "stamp", "line": "Paid, without you writing a single reminder", "stamp": "PAID", "caption": "without you writing a reminder" },
+    { "beats": 4, "graphic": "counter", "line": "6 hours back", "fact": "hours_saved", "label": "hours back", "prefix": "" },
+    { "beats": 6, "graphic": "cta", "line": "Try it free", "cta": "Try it free" }
+  ]
+}
