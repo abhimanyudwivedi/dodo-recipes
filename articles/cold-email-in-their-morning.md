@@ -10,7 +10,7 @@ personal emails in the evening in Bengaluru, they land in a New York inbox at 9a
 8am and a San Francisco inbox at 6am, under everything that arrives before breakfast.
 
 Sequencers fix the timing for $40-100 a month, along with features you don't need if you write every
-email yourself. This is the version I built for my own startup instead: about 400 lines, free tiers,
+email yourself. This is the version I built for my own startup instead: about 250 lines, free tiers,
 and the Claude subscription I already pay for. The code is open.
 
 ## What it does
