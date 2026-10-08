@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build It With Your AI</title>
+<meta name="description" content="Complete, working growth tools for founders: a cold-email engine, a video ad engine and a daily report email. Built with your own Claude or ChatGPT, run on free tiers, and paid for through Dodo Payments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1ea;--card:#fffdf8;--ink:#141414;--muted:#5d5a55;--line:#e3ded3;--accent:#ff5a36;--chip:#ffe3d6;--code:#1b1b1b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121211;--card:#1c1b19;--ink:#f2efe8;--muted:#a7a29a;--line:#302e2a;--accent:#ff7a5c;--chip:#3a2219;--code:#0b0b0a}}
+:root[data-theme="dark"]{--bg:#121211;--card:#1c1b19;--ink:#f2efe8;--muted:#a7a29a;--line:#302e2a;--accent:#ff7a5c;--chip:#3a2219;--code:#0b0b0a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header{padding:72px 0 40px}
+.kicker{font:500 13px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+h1{font-weight:900;font-size:clamp(40px,7vw,76px);line-height:1;letter-spacing:-.045em;margin:16px 0 20px;max-width:900px}
+.lede{font-size:20px;color:var(--muted);max-width:680px;margin:0}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:40px 0 0;padding:0;list-style:none}
+.how li{border-top:2px solid var(--ink);padding-top:12px;font-size:15px;color:var(--muted)}
+.how b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+h2{font-size:28px;letter-spacing:-.03em;margin:64px 0 20px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;display:flex;flex-direction:column}
+.card h3{font-size:22px;line-height:1.2;letter-spacing:-.025em;margin:12px 0 10px}
+.card p{margin:0 0 16px;color:var(--muted);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 12px/1 "JetBrains Mono",monospace;background:var(--chip);color:var(--ink);padding:6px 9px;border-radius:999px}
+.meta{margin:auto 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.meta dt{color:var(--muted)}.meta dd{margin:0;font-weight:600}
+.btn{display:inline-block;margin-top:18px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:700;padding:12px 18px;border-radius:12px;text-align:center}
+.btn:hover{background:var(--accent);color:#141414}
+.diagram{background:var(--code);color:#e9e6df;border-radius:18px;padding:22px;font:500 13px/1.6 "JetBrains Mono",monospace;overflow-x:auto;white-space:pre}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.next{list-style:none;padding:0;margin:0}.next li{padding:12px 0;border-bottom:1px solid var(--line)}
+.next span{color:var(--muted);font-size:14px;display:block}
+.dodo{background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:28px;margin-top:64px}
+.dodo h2{margin-top:0}
+footer{padding:48px 0 64px;color:var(--muted);font-size:14px}
+a{color:inherit}
+@media (max-width:860px){.grid,.how,.two{grid-template-columns:1fr}header{padding-top:48px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Recipes for founders</div>
+  <h1>Build the growth tools you'd otherwise rent.</h1>
+  <p class="lede">Complete, working tools a founder can build in an afternoon with the Claude or ChatGPT subscription they already pay for. Each one runs on free tiers, ships with tests, and ends with how to get paid for what it brings in.</p>
+  <ul class="how">
+    <li><b>Not a prompt list</b>System design, the prompts in build order, working code, and tests.</li>
+    <li><b>Used on a real business</b>Every recipe is rewritten from tools that run a live product today.</li>
+    <li><b>Ends in revenue</b>The last step wires in Dodo Payments: checkout, subscriptions, webhooks.</li>
+  </ul>
+</header>
+
+<h2>The recipes</h2>
+<div class="grid">
+  <article class="card">
+    <div class="chips"><span class="chip">outreach</span><span class="chip">Vercel</span><span class="chip">Postgres</span></div>
+    <h3>Cold-email engine that sends in each person's morning</h3>
+    <p>Drafts you approve, sent one at a time at 9am in each recipient's own time zone, follow-ups in the same thread, and anyone who replied skipped automatically.</p>
+    <dl class="meta"><dt>Replaces</dt><dd>email sequencers, $40-100/mo</dd><dt>Runs on</dt><dd>free tiers + your mailbox</dd><dt>Tests</dt><dd>11</dd></dl>
+    <a class="btn" href="../recipes/cold-email-engine/">Read the recipe</a>
+  </article>
+  <article class="card">
+    <div class="chips"><span class="chip">ads</span><span class="chip">Remotion</span><span class="chip">React</span></div>
+    <h3>Video ad engine: one JSON file in, beat-synced ads out</h3>
+    <p>A hook, five shots and the facts behind every number. One command audits it, writes original music on the ad's tempo, and renders an MP4 per hook.</p>
+    <dl class="meta"><dt>Replaces</dt><dd>editor per variant, video tools $30-100/mo</dd><dt>Runs on</dt><dd>your laptop</dd><dt>Tests</dt><dd>6</dd></dl>
+    <a class="btn" href="../recipes/video-ad-engine/">Read the recipe</a>
+  </article>
+  <article class="card">
+    <div class="chips"><span class="chip">retention</span><span class="chip">Resend</span><span class="chip">webhooks</span></div>
+    <h3>The daily report email your customers actually open</h3>
+    <p>Each morning, what your product did for each paying customer yesterday. Never sent empty, gated on their Dodo subscription, one-click unsubscribe.</p>
+    <dl class="meta"><dt>Replaces</dt><dd>a dashboard nobody opens</dd><dt>Runs on</dt><dd>free tiers</dd><dt>Tests</dt><dd>7</dd></dl>
+    <a class="btn" href="../recipes/daily-report-email/">Read the recipe</a>
+  </article>
+</div>
+
+<h2>Every recipe has the same seven parts</h2>
+<div class="two">
+<div class="diagram">1  What you'll have at the end
+2  Who it's for, what it replaces
+3  System design: parts, where, cost
+4  Build it with your AI: the prompts
+5  Make it safe: the checks in code
+6  Charge for it with Dodo
+7  How it's used on a real business</div>
+<div>
+  <p style="margin-top:0">Part 5 is the one generic templates leave out. It's the list of things that went wrong when the tool ran for real: a mail search that matched every sender, a daily job that reported success while skipping customers, a number in an ad that drifted from the source. Each one is now a check in code, with a test.</p>
+  <p>Part 6 is why these tools exist. A cold email that converts needs a payment link; an ad needs a checkout that tells you which hook sold; a report is worth sending only to customers who pay.</p>
+</div>
+</div>
+
+<h2>Coming next</h2>
+<ul class="next">
+  <li>SEO landing pages with instant indexing<span>Pages that answer real searches, submitted to Bing, which ChatGPT search draws on, the minute they deploy.</span></li>
+  <li>New-customer alert and onboarding emails from a Dodo webhook<span>Know within a minute when someone pays, and what they signed up for.</span></li>
+  <li>AI-written content with a fact-checker in code<span>Generated copy that can't claim anything your source doesn't say.</span></li>
+</ul>
+
+<section class="dodo">
+  <h2>Why every recipe ends with Dodo Payments</h2>
+  <p>Dodo Payments is a merchant of record: it sells on your behalf, so sales tax, VAT and local payment methods are handled when your first customer abroad pays. For a founder building tools like these on an afternoon's budget, that's the difference between "I'll add billing later" and charging on day one.</p>
+  <a class="btn" href="https://dodopayments.com/?utm_source=recipes&amp;utm_medium=gallery&amp;utm_campaign=recipes-home">Start with Dodo Payments</a>
+</section>
+
+<footer>Written by the founder of Zipply, an AI job-search concierge that runs on these tools and takes payments through Dodo. Code is MIT licensed.</footer>
+</div>
+</body>
+</html>
