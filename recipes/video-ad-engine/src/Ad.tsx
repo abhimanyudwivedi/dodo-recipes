@@ -53,7 +53,7 @@ const Stamp: React.FC<{ text: string; caption?: string; fpb: number; c: any }> =
   const cap = useIn(fpb * 2);
   return (
     <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", fontFamily: FONT }}>
-      <div style={{ opacity: o, transform: `scale(${s}) rotate(-8deg)`, border: `14px solid ${c.accent}`, color: c.accent, fontSize: 210, fontWeight: 900, padding: "10px 60px", borderRadius: 30, letterSpacing: "0.04em" }}>{text}</div>
+      <div style={{ opacity: o, transform: `scale(${s}) rotate(-8deg)`, border: `14px solid ${c.accent}`, color: c.accent, fontSize: Math.min(210, Math.floor(1150 / text.length)), fontWeight: 900, padding: "10px 60px", borderRadius: 30, letterSpacing: "0.04em" }}>{text}</div>
       {caption && <div style={{ marginTop: 80, fontSize: 58, fontWeight: 700, color: c.ink, opacity: cap, maxWidth: 820, textAlign: "center" }}>{caption}</div>}
       <Sfx at={fpb} name="stamp" vol={0.8} />
     </AbsoluteFill>
