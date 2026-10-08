@@ -1,0 +1,15 @@
+{
+  "name": "cold-email-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal cold email that lands at 9-10am in each recipient's own time zone, with reply detection. Runs on free tiers.",
+  "scripts": {
+    "queue": "node scripts/queue.mjs",
+    "status": "node scripts/status.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "postgres": "^3.4.4"
+  }
+}

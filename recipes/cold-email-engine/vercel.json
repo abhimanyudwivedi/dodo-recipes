@@ -1,0 +1,1 @@
+{ "functions": { "api/send-due.js": { "maxDuration": 60 } } }

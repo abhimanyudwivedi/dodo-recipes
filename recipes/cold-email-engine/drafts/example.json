@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-13",
+  "drafts": [
+    {
+      "email": "ana@example.com",
+      "name": "Ana",
+      "tz": "America/Chicago",
+      "kind": "first",
+      "subject": "your migration writeup",
+      "body": "Hi Ana,\n\nSaw your post about moving the billing service off cron jobs. The part about idempotency keys is the bit most teams skip, and you explained it in two lines.\n\nI'm building a small tool for exactly that kind of team...\n\nWorth a look? Feel free to say no.\n\nSam",
+      "approved": false
+    }
+  ]
+}
