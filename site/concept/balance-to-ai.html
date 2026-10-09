@@ -78,13 +78,27 @@ td.r,th.r{text-align:right}
 .roi .card{padding:18px}
 .roi b{display:block;font-family:"Inter Tight";font-weight:500;font-size:30px;letter-spacing:-.03em;margin-top:6px}
 .roi span{font-size:13px;color:var(--muted)}
+.subs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.sub{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.sub .price{font-family:"Inter Tight";font-weight:500;font-size:26px;letter-spacing:-.03em}
+.sub .price small{font-family:Inter;font-size:13px;color:var(--soft);letter-spacing:0}
+.sub .from{display:flex;align-items:center;gap:10px;font-size:13px;color:#333;border-top:1px dashed var(--line);padding-top:10px;margin-top:auto}
+.sub .ren{font-size:12.5px;color:var(--muted)}
+.sub.on{border-color:var(--green);box-shadow:0 0 0 3px var(--t-green)}
+.note{font-size:12.5px;color:var(--soft);margin:10px 0 0}
+.tax{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+.tax .lines div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.tax .lines div:last-child{border:none;font-weight:600;font-size:15px}
+.tax .lines span{color:var(--muted)}
+.mor{background:var(--t-green);border-radius:12px;padding:16px 18px;font-size:14px;color:#24352d}
+.mor b{display:block;font-size:15px;color:var(--ink);margin-bottom:4px}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;transition:transform .3s;z-index:20;max-width:calc(100% - 32px)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast b{color:var(--lime)}
 .how{background:#fff;border:1px dashed #cfd3d1;border-radius:14px;padding:18px 20px;margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;font-size:13px;color:var(--muted)}
 .how b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
 .how .n{font:500 12px "JetBrains Mono",monospace;color:var(--green)}
-@media (max-width:1000px){.app{grid-template-columns:minmax(0,1fr)}.side{display:none}.grid,.providers,.roi,.how{grid-template-columns:1fr}.main{padding:20px 16px 60px}}
+@media (max-width:1000px){.subs,.tax{grid-template-columns:1fr}.app{grid-template-columns:minmax(0,1fr)}.side{display:none}.grid,.providers,.roi,.how{grid-template-columns:1fr}.main{padding:20px 16px 60px}}
 </style>
 </head>
 <body>
@@ -102,7 +116,7 @@ td.r,th.r{text-align:right}
 
   <main class="main">
     <div class="top">
-      <div><h1>Spend on AI</h1><p>Pay for the AI that builds your product, straight from what your product earns.</p></div>
+      <div><h1>Spend on AI</h1><p>Pay for the AI subscriptions and credits that build your product, straight from what your product earns. Tax handled on both sides.</p></div>
       <button class="btn ghost" id="reveal">Show card details</button>
     </div>
 
@@ -120,13 +134,17 @@ td.r,th.r{text-align:right}
       </div>
     </div>
 
-    <h2>Your AI providers</h2>
+    <h2>AI subscriptions</h2>
+    <div class="subs" id="subs"></div>
+    <p class="note">Sample prices. Plans renew monthly on the AI card, charged to your available payout.</p>
+
+    <h2>API credits</h2>
     <div class="providers" id="providers"></div>
 
     <div class="how">
       <div><span class="n">01</span><b>You sell</b>Customers pay through Dodo, tax handled.</div>
       <div><span class="n">02</span><b>Payout builds up</b>Earnings land in your available payout.</div>
-      <div><span class="n">03</span><b>AI card spends it</b>A virtual card tops up your AI accounts. No foreign card, no declined payment.</div>
+      <div><span class="n">03</span><b>AI card spends it</b>A virtual card pays your AI plans and credits. No foreign card, no declined payment.</div>
       <div><span class="n">04</span><b>You build more</b>The recipes turn that AI into tools that sell.</div>
     </div>
 
@@ -134,6 +152,16 @@ td.r,th.r{text-align:right}
     <div class="card" style="padding:14px 22px 6px;overflow-x:auto">
       <table><thead><tr><th>Date</th><th>Provider</th><th>What it paid for</th><th>Paid from</th><th class="r">Amount</th></tr></thead>
       <tbody id="tx"></tbody></table>
+    </div>
+
+    <h2>Tax, handled</h2>
+    <div class="tax">
+      <div class="card lines" id="taxlines"></div>
+      <div class="card" style="display:flex;flex-direction:column;gap:14px">
+        <div class="mor"><b>On what you sell</b>Dodo is your merchant of record: sales tax and VAT are calculated, collected and filed on every sale, in every country Dodo sells to.</div>
+        <div class="mor" style="background:var(--t-purple)"><b>On what you spend</b>Every AI charge is saved with its invoice and the tax on it, ready for your accountant or your expense claim.</div>
+        <button class="btn ghost" id="export">Export AI invoices for October</button>
+      </div>
     </div>
 
     <h2>This month</h2>
@@ -154,10 +182,19 @@ const state = {
     { id: "openai", name: "OpenAI", sub: "API platform", mark: "O", bg: "#e6f4ee", fg: "#0b7a52", credit: 64, low: 20, auto: false, pick: 25 },
     { id: "gemini", name: "Gemini", sub: "Google AI Studio", mark: "G", bg: "#e7f0ff", fg: "#1264ff", credit: 37, low: 15, auto: true, pick: 25 },
   ],
+  subs: [
+    { id: "claude-pro", name: "Claude Pro", by: "Anthropic", price: 20, on: true, ren: "Oct 14" },
+    { id: "claude-max", name: "Claude Max", by: "Anthropic", price: 100, on: false, ren: "on switch" },
+    { id: "chatgpt-plus", name: "ChatGPT Plus", by: "OpenAI · includes Codex", price: 20, on: true, ren: "Oct 21" },
+    { id: "google-ai-pro", name: "Google AI Pro", by: "Gemini", price: 20, on: false, ren: "on switch" },
+  ],
+  taxCollected: 512,
   tx: [
     ["Oct 7", "Claude", "Auto top-up: credit under $20", "Payout", 50],
     ["Oct 4", "Gemini", "Manual top-up", "Payout", 25],
     ["Oct 1", "OpenAI", "Manual top-up", "Payout", 25],
+    ["Sep 21", "ChatGPT Plus", "Subscription, monthly", "Payout", 20],
+    ["Sep 14", "Claude Pro", "Subscription, monthly", "Payout", 20],
   ],
 };
 const $ = (id) => document.getElementById(id);
@@ -184,6 +221,19 @@ function render() {
       <div class="rule"><button class="sw ${p.auto ? "on" : ""}" data-auto="${p.id}" aria-label="Auto top-up"></button>
         <span>Auto top-up ${usd(p.pick)} when under ${usd(p.low)}</span></div>
     </div>`).join("");
+  $("subs").innerHTML = state.subs.map((x) => `
+    <div class="sub ${x.on ? "on" : ""}">
+      <div><b>${x.name}</b><small style="display:block;color:var(--soft);font-size:12px">${x.by}</small></div>
+      <div class="price">$${x.price}<small> / month</small></div>
+      <div class="ren">${x.on ? "Renews " + x.ren : "Not on your AI card"}</div>
+      <div class="from"><button class="sw ${x.on ? "on" : ""}" data-sub="${x.id}" aria-label="Pay from payout"></button><span>Pay from payout</span></div>
+    </div>`).join("");
+  const aiSpent = spent(), earned = 4280;
+  $("taxlines").innerHTML = `<div><span>Earned on Dodo</span>${usd(earned)}</div>
+    <div><span>Sales tax collected and filed by Dodo</span>−${usd(state.taxCollected)}</div>
+    <div><span>AI subscriptions and credits</span>−${usd(aiSpent)}</div>
+    <div><span>Invoices on file for AI spend</span>${state.tx.length}</div>
+    <div><span>Kept, before your own income tax</span>${usd(earned - state.taxCollected - aiSpent)}</div>`;
   $("tx").innerHTML = state.tx.map((t) => `<tr><td>${t[0]}</td><td>${t[1]}</td><td>${t[2]}</td><td><span class="tag" style="background:var(--t-green);color:var(--green)">${t[3]}</span></td><td class="r">−${usd(t[4])}</td></tr>`).join("");
 }
 function toast(html) { const t = $("toast"); t.innerHTML = html; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2600); }
@@ -200,6 +250,15 @@ document.addEventListener("click", (e) => {
     render(); toast(`<b>${usd(p.pick)}</b> added to ${p.name} from your available payout. Paid by your AI card.`);
   }
   if (b.dataset.auto) { const p = P(b.dataset.auto); p.auto = !p.auto; render(); toast(p.auto ? `Auto top-up on for ${p.name}.` : `Auto top-up off for ${p.name}.`); }
+  if (b.dataset.sub) {
+    const x = state.subs.find((s) => s.id === b.dataset.sub); x.on = !x.on;
+    if (x.on) { if (x.price > state.balance) { x.on = false; return toast("Not enough available payout for that plan."); }
+      state.balance -= x.price; x.ren = "Nov 9"; state.tx.unshift(["Today", x.name, "Subscription, monthly", "Payout", x.price]);
+      toast(`<b>${x.name}</b> now paid from your available payout. Renews monthly on your AI card.`);
+    } else { x.ren = "on switch"; toast(`${x.name} will stop renewing from your payout.`); }
+    render();
+  }
+  if (b.id === "export") toast(`<b>${state.tx.length} invoices</b> exported with tax broken out. (Concept: no file is created.)`);
   if (b.id === "reveal") {
     const on = b.dataset.on !== "1"; b.dataset.on = on ? "1" : "0";
     $("cardnum").textContent = on ? "4242 4242 4242 4821" : "•••• •••• •••• 4821";
