@@ -18,7 +18,7 @@ h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;font-weight:500;letter-spaci
 button{font:inherit;cursor:pointer}
 .ribbon{background:var(--ink);color:#fff;text-align:center;font-size:13px;padding:8px 16px}
 .ribbon b{color:var(--lime);font-weight:600}
-.app{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - 36px)}
+.app{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:calc(100vh - 36px)}
 .side{background:#fff;border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:2px}
 .who{display:flex;align-items:center;gap:10px;padding:6px 8px 18px}
 .who i{width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-style:normal;font-weight:700}
@@ -84,7 +84,7 @@ td.r,th.r{text-align:right}
 .how{background:#fff;border:1px dashed #cfd3d1;border-radius:14px;padding:18px 20px;margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;font-size:13px;color:var(--muted)}
 .how b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
 .how .n{font:500 12px "JetBrains Mono",monospace;color:var(--green)}
-@media (max-width:1000px){.app{grid-template-columns:1fr}.side{display:none}.grid,.providers,.roi,.how{grid-template-columns:1fr}.main{padding:20px 16px 60px}}
+@media (max-width:1000px){.app{grid-template-columns:minmax(0,1fr)}.side{display:none}.grid,.providers,.roi,.how{grid-template-columns:1fr}.main{padding:20px 16px 60px}}
 </style>
 </head>
 <body>
