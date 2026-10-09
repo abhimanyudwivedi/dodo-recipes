@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Balance to AI: Concept</title>
+<meta name="description" content="Concept: a merchant pays for the AI tools that grow their business straight from their payout balance, through a virtual card funded by sales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#00160d;--muted:#666;--soft:#8a8f8c;--line:#e8e8e8;--panel:#fafafa;--lime:#c6fe1e;
+--green:#00ad64;--blue:#1264ff;--red:#e83439;--orange:#ff8b37;--purple:#6248c6;
+--t-green:#e6fbf2;--t-blue:#e7f0ff;--t-pink:#fdedf8;--t-yellow:#fffbed;--t-purple:#efebff}
+*{box-sizing:border-box}
+body{margin:0;background:#f6f6f5;color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;font-weight:500;letter-spacing:-.035em;margin:0}
+button{font:inherit;cursor:pointer}
+.ribbon{background:var(--ink);color:#fff;text-align:center;font-size:13px;padding:8px 16px}
+.ribbon b{color:var(--lime);font-weight:600}
+.app{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - 36px)}
+.side{background:#fff;border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:2px}
+.who{display:flex;align-items:center;gap:10px;padding:6px 8px 18px}
+.who i{width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-style:normal;font-weight:700}
+.who b{display:block;font-size:14px}.who span{font-size:12px;color:var(--soft)}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:#444;text-decoration:none;font-size:14px}
+.nav a.on{background:var(--t-green);color:var(--ink);font-weight:600}
+.nav a .new{margin-left:auto;background:var(--lime);font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px}
+.nav .sep{height:1px;background:var(--line);margin:10px 4px}
+.main{padding:28px 36px 60px;max-width:1180px}
+.top{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.top h1{font-size:30px}
+.top p{margin:4px 0 0;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14px}
+.btn.lime{background:var(--lime);color:var(--ink)}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:#333}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px}
+.k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);font-weight:600}
+.bal{display:flex;align-items:end;gap:14px;margin:8px 0 4px}
+.bal b{font-family:"Inter Tight";font-weight:500;font-size:52px;letter-spacing:-.04em;line-height:1}
+.bal span{color:var(--muted);padding-bottom:8px}
+.split{display:flex;height:10px;border-radius:999px;overflow:hidden;margin:18px 0 10px;background:#eee}
+.split div{transition:width .5s}
+.legend{display:flex;gap:18px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+.vcard{border-radius:16px;padding:20px;color:#fff;background:linear-gradient(135deg,#1b1530,#2a1b5c 60%,#3f2c8a);position:relative;overflow:hidden;min-height:176px;display:flex;flex-direction:column;justify-content:space-between}
+.vcard::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(198,254,30,.35),transparent 65%)}
+.vcard .row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.vcard .num{font:500 19px "JetBrains Mono",monospace;letter-spacing:.08em;position:relative;z-index:1}
+.chip{width:34px;height:26px;border-radius:6px;background:linear-gradient(135deg,#e9d98f,#b99a3c)}
+.pill{font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px;background:rgba(255,255,255,.14)}
+h2{font-size:22px;margin:28px 0 14px}
+.providers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.prov{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.prov .h{display:flex;align-items:center;gap:10px}
+.prov .m{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-family:"Inter Tight";font-weight:600;font-size:16px}
+.prov b{font-size:16px}
+.prov small{display:block;color:var(--soft);font-size:12px}
+.meter{height:8px;border-radius:999px;background:#eee;overflow:hidden}
+.meter div{height:100%;border-radius:999px;transition:width .5s}
+.cr{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.cr b{color:var(--ink);font-size:13px}
+.amts{display:flex;gap:6px}
+.amts button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 0;font-weight:600;font-size:13px}
+.amts button.sel{border-color:var(--ink);background:var(--ink);color:#fff}
+.rule{display:flex;align-items:center;gap:12px;font-size:13px;color:#333;padding-top:10px;border-top:1px dashed var(--line)}
+.sw{width:36px;height:20px;border-radius:999px;background:#d7d9d8;position:relative;border:0;flex:0 0 36px;transition:background .2s}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s}
+.sw.on{background:var(--green)}.sw.on::after{left:19px}
+table{width:100%;min-width:560px;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--soft);font-weight:600;padding:0 10px 10px 0;border-bottom:1px solid var(--line)}
+td{padding:12px 10px 12px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+td.r,th.r{text-align:right}
+.tag{font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px}
+.roi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.roi .card{padding:18px}
+.roi b{display:block;font-family:"Inter Tight";font-weight:500;font-size:30px;letter-spacing:-.03em;margin-top:6px}
+.roi span{font-size:13px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;transition:transform .3s;z-index:20;max-width:calc(100% - 32px)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast b{color:var(--lime)}
+.how{background:#fff;border:1px dashed #cfd3d1;border-radius:14px;padding:18px 20px;margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;font-size:13px;color:var(--muted)}
+.how b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+.how .n{font:500 12px "JetBrains Mono",monospace;color:var(--green)}
+@media (max-width:1000px){.app{grid-template-columns:1fr}.side{display:none}.grid,.providers,.roi,.how{grid-template-columns:1fr}.main{padding:20px 16px 60px}}
+</style>
+</head>
+<body>
+<div class="ribbon"><b>Concept</b> · A proposal for Dodo Payments by the founder of Zipply. Sample data, not a real product.</div>
+<div class="app">
+  <aside class="side">
+    <div class="who"><i>A</i><div><b>Acme Studio</b><span>Merchant · Live mode</span></div></div>
+    <nav class="nav">
+      <a href="#">Home</a><a href="#">Payments</a><a href="#">Subscriptions</a><a href="#">Customers</a><a href="#">Payouts</a>
+      <div class="sep"></div>
+      <a href="#" class="on">Spend on AI <span class="new">New</span></a>
+      <a href="../index.html">Build-it recipes</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <div><h1>Spend on AI</h1><p>Pay for the AI that builds your product, straight from what your product earns.</p></div>
+      <button class="btn ghost" id="reveal">Show card details</button>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="k">Available balance</div>
+        <div class="bal"><b id="bal">$0</b><span>USD · next payout Fri</span></div>
+        <div class="split"><div id="sAvail" style="background:var(--green)"></div><div id="sAi" style="background:var(--purple)"></div><div id="sPend" style="background:var(--orange)"></div></div>
+        <div class="legend"><span><i style="background:var(--green)"></i>Available</span><span><i style="background:var(--purple)"></i>Set aside for AI this month <b id="aiCap"></b></span><span><i style="background:var(--orange)"></i>Pending</span></div>
+      </div>
+      <div class="vcard">
+        <div class="row"><span class="pill">AI card · funded by sales</span><div class="chip"></div></div>
+        <div class="num" id="cardnum">•••• •••• •••• 4821</div>
+        <div class="row"><span>Acme Studio</span><span id="exp">•• / ••</span></div>
+      </div>
+    </div>
+
+    <h2>Your AI providers</h2>
+    <div class="providers" id="providers"></div>
+
+    <div class="how">
+      <div><span class="n">01</span><b>You sell</b>Customers pay through Dodo, tax handled.</div>
+      <div><span class="n">02</span><b>Balance grows</b>Earnings land in your Dodo balance.</div>
+      <div><span class="n">03</span><b>AI card spends it</b>A virtual card tops up your AI accounts. No foreign card, no declined payment.</div>
+      <div><span class="n">04</span><b>You build more</b>The recipes turn that AI into tools that sell.</div>
+    </div>
+
+    <h2>Recent AI spend</h2>
+    <div class="card" style="padding:14px 22px 6px;overflow-x:auto">
+      <table><thead><tr><th>Date</th><th>Provider</th><th>What it paid for</th><th>Paid from</th><th class="r">Amount</th></tr></thead>
+      <tbody id="tx"></tbody></table>
+    </div>
+
+    <h2>This month</h2>
+    <div class="roi">
+      <div class="card"><span class="k">Earned on Dodo</span><b>$4,280</b><span>from 86 subscriptions</span></div>
+      <div class="card"><span class="k">Spent on AI</span><b id="spent">$0</b><span id="pct"></span></div>
+      <div class="card"><span class="k">Built with it</span><b>3 tools</b><span>cold email, ad engine, daily report</span></div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const state = {
+  balance: 3140, pending: 1140, aiCap: 400,
+  providers: [
+    { id: "claude", name: "Claude", sub: "Anthropic API", mark: "C", bg: "#f6e9dd", fg: "#b4542c", credit: 18, low: 20, auto: true, pick: 50 },
+    { id: "openai", name: "OpenAI", sub: "API platform", mark: "O", bg: "#e6f4ee", fg: "#0b7a52", credit: 64, low: 20, auto: false, pick: 25 },
+    { id: "gemini", name: "Gemini", sub: "Google AI Studio", mark: "G", bg: "#e7f0ff", fg: "#1264ff", credit: 37, low: 15, auto: true, pick: 25 },
+  ],
+  tx: [
+    ["Oct 7", "Claude", "Auto top-up: balance under $20", "Balance", 50],
+    ["Oct 4", "Gemini", "Manual top-up", "Balance", 25],
+    ["Oct 1", "OpenAI", "Manual top-up", "Balance", 25],
+  ],
+};
+const $ = (id) => document.getElementById(id);
+const usd = (n) => "$" + n.toLocaleString("en-US");
+const spent = () => state.tx.reduce((n, t) => n + t[4], 0);
+
+function render() {
+  $("bal").textContent = usd(state.balance);
+  const total = state.balance + state.pending;
+  const ai = Math.max(0, state.aiCap - spent());
+  $("sAvail").style.width = ((state.balance - ai) / total * 100) + "%";
+  $("sAi").style.width = (ai / total * 100) + "%";
+  $("sPend").style.width = (state.pending / total * 100) + "%";
+  $("aiCap").textContent = usd(ai) + " left of " + usd(state.aiCap);
+  $("spent").textContent = usd(spent());
+  $("pct").textContent = Math.round(spent() / 4280 * 1000) / 10 + "% of what you earned";
+  $("providers").innerHTML = state.providers.map((p) => `
+    <div class="prov">
+      <div class="h"><div class="m" style="background:${p.bg};color:${p.fg}">${p.mark}</div><div><b>${p.name}</b><small>${p.sub}</small></div></div>
+      <div class="cr"><span>Credit left</span><b>${usd(p.credit)}</b></div>
+      <div class="meter"><div style="width:${Math.min(100, p.credit)}%;background:${p.credit < p.low ? "var(--red)" : p.fg}"></div></div>
+      <div class="amts">${[10, 25, 50, 100].map((a) => `<button data-p="${p.id}" data-a="${a}" class="${a === p.pick ? "sel" : ""}">$${a}</button>`).join("")}</div>
+      <button class="btn lime" data-top="${p.id}">Top up ${usd(p.pick)} from balance</button>
+      <div class="rule"><button class="sw ${p.auto ? "on" : ""}" data-auto="${p.id}" aria-label="Auto top-up"></button>
+        <span>Auto top-up ${usd(p.pick)} when under ${usd(p.low)}</span></div>
+    </div>`).join("");
+  $("tx").innerHTML = state.tx.map((t) => `<tr><td>${t[0]}</td><td>${t[1]}</td><td>${t[2]}</td><td><span class="tag" style="background:var(--t-green);color:var(--green)">${t[3]}</span></td><td class="r">−${usd(t[4])}</td></tr>`).join("");
+}
+function toast(html) { const t = $("toast"); t.innerHTML = html; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2600); }
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  const P = (id) => state.providers.find((p) => p.id === id);
+  if (b.dataset.a) { P(b.dataset.p).pick = +b.dataset.a; render(); }
+  if (b.dataset.top) {
+    const p = P(b.dataset.top);
+    if (p.pick > state.balance) return toast("Not enough balance for that top-up.");
+    state.balance -= p.pick; p.credit += p.pick;
+    state.tx.unshift(["Today", p.name, "Manual top-up", "Balance", p.pick]);
+    render(); toast(`<b>${usd(p.pick)}</b> added to ${p.name} from your Dodo balance. Paid by your AI card.`);
+  }
+  if (b.dataset.auto) { const p = P(b.dataset.auto); p.auto = !p.auto; render(); toast(p.auto ? `Auto top-up on for ${p.name}.` : `Auto top-up off for ${p.name}.`); }
+  if (b.id === "reveal") {
+    const on = b.dataset.on !== "1"; b.dataset.on = on ? "1" : "0";
+    $("cardnum").textContent = on ? "4242 4242 4242 4821" : "•••• •••• •••• 4821";
+    $("exp").textContent = on ? "09 / 28" : "•• / ••";
+    b.textContent = on ? "Hide card details" : "Show card details";
+  }
+});
+render();
+</script>
+</body>
+</html>
