@@ -100,6 +100,27 @@ section{border-bottom:1px solid var(--line)}
 .parts{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:10px 24px;font-size:15px;color:#d8d5e6}
 .parts li{display:flex;gap:10px}.parts span{font-family:"JetBrains Mono";color:var(--lime)}
 
+.vision{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:center}
+.vision h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.vision h2 span{color:#a3a8a5;display:block}
+.vision p{color:var(--muted);font-size:17px;margin:20px 0 26px;max-width:480px}
+.vision .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.vision .chips span{font-size:13px;font-weight:600;border-radius:999px;padding:5px 12px;background:var(--panel);border:1px solid var(--line)}
+.mock{border:1px solid var(--line);border-radius:16px;background:#f6f6f5;padding:18px;box-shadow:0 20px 50px rgba(0,22,13,.08);display:block;transition:transform .2s}
+.mock:hover{transform:translateY(-3px)}
+.mock .tb{display:flex;gap:6px;margin-bottom:12px}.mock .tb i{width:9px;height:9px;border-radius:50%;background:#d9d9d9}
+.mock .row{display:grid;grid-template-columns:1.1fr 1fr;gap:12px}
+.mock .box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.mock .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);font-weight:600}
+.mock .big{font-family:"Inter Tight";font-weight:500;font-size:30px;letter-spacing:-.04em;line-height:1.1;margin-top:4px}
+.mock .vc{border-radius:12px;padding:14px;color:#fff;background:linear-gradient(135deg,#1b1530,#2a1b5c 60%,#3f2c8a);display:flex;flex-direction:column;justify-content:space-between;font:500 12px "JetBrains Mono",monospace}
+.mock .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.mock .plan{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px}
+.mock .plan b{display:block;font-size:13px}.mock .plan.on{border-color:var(--green);box-shadow:0 0 0 2px var(--t-green)}
+.mock .sw{display:inline-block;width:22px;height:12px;border-radius:999px;background:var(--green);vertical-align:middle;margin-right:6px;position:relative}
+.mock .sw::after{content:"";position:absolute;right:2px;top:2px;width:8px;height:8px;border-radius:50%;background:#fff}
+.mock .sw.off{background:#d7d9d8}.mock .sw.off::after{right:auto;left:2px}
+@media (max-width:960px){.vision{grid-template-columns:1fr}.mock .plans{grid-template-columns:1fr}}
 .next{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .nx{border:1px dashed #cfd3d1;border-radius:14px;padding:22px;background:var(--panel)}
 .nx b{display:block;font-family:"Inter Tight";font-weight:500;font-size:19px;letter-spacing:-.02em;margin-bottom:6px}
@@ -128,7 +149,7 @@ footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--so
 <body>
 <header><div class="nav">
   <a class="brand" href="#"><i>↗</i>Build it</a>
-  <nav class="links"><a href="#recipes">Recipes</a><a href="#how">How a recipe works</a><a href="#next">Coming next</a>
+  <nav class="links"><a href="#recipes">Recipes</a><a href="#how">How a recipe works</a><a href="#next">Coming next</a><a href="#vision">Where it goes</a>
   <a class="btn lime" href="https://dodopayments.com/?utm_source=recipes&amp;utm_medium=gallery&amp;utm_campaign=recipes-nav">Start with Dodo</a></nav>
 </div></header>
 
@@ -223,6 +244,29 @@ footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--so
 <span class="k">●</span> <span class="v">subscription.expired</span>    → reports off
 
 <span class="k">✓</span> 7 tests passing</div>
+  </div>
+</section>
+
+<section class="pad" id="vision">
+  <div class="vision">
+    <div>
+      <h2>Where this could go.<span>Pay for your AI from what you earn.</span></h2>
+      <p>The recipes bring founders in by building with AI. The next step keeps them in: Claude, ChatGPT and Gemini plans and API credits paid straight from their available payout, through a virtual card funded by sales, with every invoice kept for tax.</p>
+      <div class="chips"><span>AI plans from payout</span><span>Auto top-up rules</span><span>Invoices for your accountant</span></div>
+      <a class="btn lime" href="concept/balance-to-ai.html">Open the clickable concept</a>
+    </div>
+    <a class="mock" href="concept/balance-to-ai.html" aria-label="Open the payout to AI concept">
+      <div class="tb"><i></i><i></i><i></i></div>
+      <div class="row">
+        <div class="box"><div class="k">Available payout</div><div class="big">$3,140</div><div style="height:6px;border-radius:999px;background:linear-gradient(90deg,var(--green) 0 62%,#6248c6 62% 72%,var(--orange) 72%);margin-top:10px"></div></div>
+        <div class="vc"><span>AI card · funded by sales</span><span>•••• 4821</span></div>
+      </div>
+      <div class="plans">
+        <div class="plan on"><b>Claude Pro</b>$20 / mo<div style="margin-top:6px"><span class="sw"></span>from payout</div></div>
+        <div class="plan on"><b>ChatGPT Plus</b>with Codex<div style="margin-top:6px"><span class="sw"></span>from payout</div></div>
+        <div class="plan"><b>Google AI Pro</b>Gemini<div style="margin-top:6px"><span class="sw off"></span>from payout</div></div>
+      </div>
+    </a>
   </div>
 </section>
 
