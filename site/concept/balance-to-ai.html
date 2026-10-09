@@ -108,7 +108,7 @@ td.r,th.r{text-align:right}
 
     <div class="grid">
       <div class="card">
-        <div class="k">Available balance</div>
+        <div class="k">Available payout</div>
         <div class="bal"><b id="bal">$0</b><span>USD · next payout Fri</span></div>
         <div class="split"><div id="sAvail" style="background:var(--green)"></div><div id="sAi" style="background:var(--purple)"></div><div id="sPend" style="background:var(--orange)"></div></div>
         <div class="legend"><span><i style="background:var(--green)"></i>Available</span><span><i style="background:var(--purple)"></i>Set aside for AI this month <b id="aiCap"></b></span><span><i style="background:var(--orange)"></i>Pending</span></div>
@@ -125,7 +125,7 @@ td.r,th.r{text-align:right}
 
     <div class="how">
       <div><span class="n">01</span><b>You sell</b>Customers pay through Dodo, tax handled.</div>
-      <div><span class="n">02</span><b>Balance grows</b>Earnings land in your Dodo balance.</div>
+      <div><span class="n">02</span><b>Payout builds up</b>Earnings land in your available payout.</div>
       <div><span class="n">03</span><b>AI card spends it</b>A virtual card tops up your AI accounts. No foreign card, no declined payment.</div>
       <div><span class="n">04</span><b>You build more</b>The recipes turn that AI into tools that sell.</div>
     </div>
@@ -155,9 +155,9 @@ const state = {
     { id: "gemini", name: "Gemini", sub: "Google AI Studio", mark: "G", bg: "#e7f0ff", fg: "#1264ff", credit: 37, low: 15, auto: true, pick: 25 },
   ],
   tx: [
-    ["Oct 7", "Claude", "Auto top-up: balance under $20", "Balance", 50],
-    ["Oct 4", "Gemini", "Manual top-up", "Balance", 25],
-    ["Oct 1", "OpenAI", "Manual top-up", "Balance", 25],
+    ["Oct 7", "Claude", "Auto top-up: credit under $20", "Payout", 50],
+    ["Oct 4", "Gemini", "Manual top-up", "Payout", 25],
+    ["Oct 1", "OpenAI", "Manual top-up", "Payout", 25],
   ],
 };
 const $ = (id) => document.getElementById(id);
@@ -180,7 +180,7 @@ function render() {
       <div class="cr"><span>Credit left</span><b>${usd(p.credit)}</b></div>
       <div class="meter"><div style="width:${Math.min(100, p.credit)}%;background:${p.credit < p.low ? "var(--red)" : p.fg}"></div></div>
       <div class="amts">${[10, 25, 50, 100].map((a) => `<button data-p="${p.id}" data-a="${a}" class="${a === p.pick ? "sel" : ""}">$${a}</button>`).join("")}</div>
-      <button class="btn lime" data-top="${p.id}">Top up ${usd(p.pick)} from balance</button>
+      <button class="btn lime" data-top="${p.id}">Top up ${usd(p.pick)} from payout</button>
       <div class="rule"><button class="sw ${p.auto ? "on" : ""}" data-auto="${p.id}" aria-label="Auto top-up"></button>
         <span>Auto top-up ${usd(p.pick)} when under ${usd(p.low)}</span></div>
     </div>`).join("");
@@ -194,10 +194,10 @@ document.addEventListener("click", (e) => {
   if (b.dataset.a) { P(b.dataset.p).pick = +b.dataset.a; render(); }
   if (b.dataset.top) {
     const p = P(b.dataset.top);
-    if (p.pick > state.balance) return toast("Not enough balance for that top-up.");
+    if (p.pick > state.balance) return toast("Not enough available payout for that top-up.");
     state.balance -= p.pick; p.credit += p.pick;
-    state.tx.unshift(["Today", p.name, "Manual top-up", "Balance", p.pick]);
-    render(); toast(`<b>${usd(p.pick)}</b> added to ${p.name} from your Dodo balance. Paid by your AI card.`);
+    state.tx.unshift(["Today", p.name, "Manual top-up", "Payout", p.pick]);
+    render(); toast(`<b>${usd(p.pick)}</b> added to ${p.name} from your available payout. Paid by your AI card.`);
   }
   if (b.dataset.auto) { const p = P(b.dataset.auto); p.auto = !p.auto; render(); toast(p.auto ? `Auto top-up on for ${p.name}.` : `Auto top-up off for ${p.name}.`); }
   if (b.id === "reveal") {
