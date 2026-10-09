@@ -15,6 +15,7 @@ const RECIPES = [
   { dir: "cold-email-engine", tag: "Outreach", color: "#00ad64", tint: "#e6fbf2" },
   { dir: "video-ad-engine", tag: "Ads", color: "#1264ff", tint: "#e7f0ff" },
   { dir: "daily-report-email", tag: "Retention", color: "#e83439", tint: "#fdedf8" },
+  { dir: "customer-alerts", tag: "Billing", color: "#ff8b37", tint: "#fff3e8" },
 ];
 
 const slug = (t) => t.toLowerCase().replace(/<[^>]+>/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");

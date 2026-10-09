@@ -64,7 +64,7 @@ section{border-bottom:1px solid var(--line)}
 .head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:40px;flex-wrap:wrap}
 .head h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
 .head p{color:var(--muted);margin:0;max-width:420px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .card{border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:box-shadow .2s,transform .2s}
 .card:hover{box-shadow:0 14px 40px rgba(0,22,13,.08);transform:translateY(-2px)}
 .vis{height:200px;padding:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -96,6 +96,27 @@ section{border-bottom:1px solid var(--line)}
 .parts{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:10px 24px;font-size:15px;color:#d8d5e6}
 .parts li{display:flex;gap:10px}.parts span{font-family:"JetBrains Mono";color:var(--lime)}
 
+.vision{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:center}
+.vision h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.vision h2 span{color:#a3a8a5;display:block}
+.vision p{color:var(--muted);font-size:17px;margin:20px 0 26px;max-width:480px}
+.vision .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.vision .chips span{font-size:13px;font-weight:600;border-radius:999px;padding:5px 12px;background:var(--panel);border:1px solid var(--line)}
+.mock{border:1px solid var(--line);border-radius:16px;background:#f6f6f5;padding:18px;box-shadow:0 20px 50px rgba(0,22,13,.08);display:block;transition:transform .2s}
+.mock:hover{transform:translateY(-3px)}
+.mock .tb{display:flex;gap:6px;margin-bottom:12px}.mock .tb i{width:9px;height:9px;border-radius:50%;background:#d9d9d9}
+.mock .row{display:grid;grid-template-columns:1.1fr 1fr;gap:12px}
+.mock .box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.mock .k{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);font-weight:600}
+.mock .big{font-family:"Inter Tight";font-weight:500;font-size:30px;letter-spacing:-.04em;line-height:1.1;margin-top:4px}
+.mock .vc{border-radius:12px;padding:14px;color:#fff;background:linear-gradient(135deg,#1b1530,#2a1b5c 60%,#3f2c8a);display:flex;flex-direction:column;justify-content:space-between;font:500 12px "JetBrains Mono",monospace}
+.mock .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.mock .plan{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px}
+.mock .plan b{display:block;font-size:13px}.mock .plan.on{border-color:var(--green);box-shadow:0 0 0 2px var(--t-green)}
+.mock .sw{display:inline-block;width:22px;height:12px;border-radius:999px;background:var(--green);vertical-align:middle;margin-right:6px;position:relative}
+.mock .sw::after{content:"";position:absolute;right:2px;top:2px;width:8px;height:8px;border-radius:50%;background:#fff}
+.mock .sw.off{background:#d7d9d8}.mock .sw.off::after{right:auto;left:2px}
+@media (max-width:960px){.vision{grid-template-columns:1fr}.mock .plans{grid-template-columns:1fr}}
 .next{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .nx{border:1px dashed #cfd3d1;border-radius:14px;padding:22px;background:var(--panel)}
 .nx b{display:block;font-family:"Inter Tight";font-weight:500;font-size:19px;letter-spacing:-.02em;margin-bottom:6px}

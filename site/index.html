@@ -68,7 +68,7 @@ section{border-bottom:1px solid var(--line)}
 .head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:40px;flex-wrap:wrap}
 .head h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
 .head p{color:var(--muted);margin:0;max-width:420px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .card{border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:box-shadow .2s,transform .2s}
 .card:hover{box-shadow:0 14px 40px rgba(0,22,13,.08);transform:translateY(-2px)}
 .vis{height:200px;padding:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -155,7 +155,7 @@ footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--so
 
 <main class="frame">
 <section class="hero">
-  <span class="badge"><b>New</b> 3 recipes · 24 tests · MIT licensed</span>
+  <span class="badge"><b>New</b> 4 recipes · 34 tests · MIT licensed</span>
   <h1>Build the growth tools you'd otherwise rent</h1>
   <p>Complete, working tools a founder can build in an afternoon with the Claude or ChatGPT they already pay for. Each runs on free tiers and ends with how to get paid for what it brings in.</p>
   <div class="ctas"><a class="btn lime" href="#recipes">Browse the recipes</a><a class="btn ghost" href="#how">How a recipe works</a></div>
@@ -175,7 +175,7 @@ footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--so
     <a class="bar" style="background:var(--green)" href="#r1"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Outreach<small>cold-email engine</small></a>
     <a class="bar" style="background:var(--blue)" href="#r2"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="m10.5 9 4 3-4 3z" fill="#fff"/></svg>Ads<small>video ad engine</small></a>
     <a class="bar" style="background:var(--red)" href="#r3"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 4h16v12H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>Retention<small>daily report email</small></a>
-    <a class="bar" style="background:var(--orange)" href="#how"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>Billing<small>every recipe, via Dodo</small></a>
+    <a class="bar" style="background:var(--orange)" href="#r4"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>Billing<small>customer alerts</small></a>
   </div>
 </section>
 
@@ -215,6 +215,20 @@ footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--so
         <p>What your product did for each paying customer yesterday, never sent empty, switched on and off by their Dodo subscription.</p>
         <dl class="meta"><dt>Replaces</dt><dd>a dashboard nobody opens</dd><dt>Stack</dt><dd>Vercel cron · Resend · webhooks</dd><dt>Tests</dt><dd>7</dd></dl>
         <a class="more" href="recipes/daily-report-email.html">Read the recipe →</a>
+      </div>
+    </article>
+    <article class="card" id="r4">
+      <div class="vis" style="background:#fff3e8"><div class="term"><span class="d">#founders · just now</span>
+<span class="k">●</span> New customer: Ana Diaz from US, $50.00/month.
+<span class="k">●</span> Payment failed for Ben. Worth a note today.
+<span class="v">●</span> Cy cancelled. Reason they gave:
+  "too_expensive: only need it in tax season"</div></div>
+      <div class="body">
+        <span class="tag" style="--c:var(--orange)">Billing</span>
+        <h3>Know the minute someone pays, and why they leave</h3>
+        <p>Dodo webhooks ping you in Slack, Discord or Telegram for new customers, failed payments and cancellations with their reason, and run onboarding emails.</p>
+        <dl class="meta"><dt>Replaces</dt><dd>checking the dashboard, an onboarding tool</dd><dt>Stack</dt><dd>Dodo webhooks · Vercel · Resend</dd><dt>Tests</dt><dd>10</dd></dl>
+        <a class="more" href="recipes/customer-alerts.html">Read the recipe →</a>
       </div>
     </article>
   </div>
@@ -274,7 +288,7 @@ footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--so
   <div class="head"><h2>Coming next</h2><p>Same seven parts, same rule: built and run on a live product first.</p></div>
   <div class="next">
     <div class="nx"><b>SEO pages with instant indexing</b><span>Pages that answer real searches, submitted to Bing, which ChatGPT search draws on, the minute they deploy.</span></div>
-    <div class="nx"><b>New-customer alert from a Dodo webhook</b><span>Know within a minute when someone pays, and what they signed up for.</span></div>
+    <div class="nx"><b>Credit-based billing for an AI product</b><span>A subscription with a usage allowance, metered through Dodo, so heavy users can't sink your margin.</span></div>
     <div class="nx"><b>AI content with a fact-checker in code</b><span>Generated copy that can't claim anything your source doesn't say.</span></div>
   </div>
 </section>
