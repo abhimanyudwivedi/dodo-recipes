@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The daily report email your customers actually open</title>
+<meta name="description" content="Every morning, each paying customer gets one email: what your product did for them yesterday, what it skipped and why, and what's next. Built from your own database, sent only to people with an active">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#00160d;--muted:#666;--soft:#8a8f8c;--line:#e8e8e8;--canvas:#fff;--panel:#fafafa;
+  --lime:#c6fe1e;--lime-ink:#00160d;
+  --green:#00ad64;--blue:#1264ff;--red:#e83439;--orange:#ff8b37;--pink:#ee46bc;
+  --t-green:#e6fbf2;--t-blue:#e7f0ff;--t-pink:#fdedf8;--t-yellow:#fffbed;
+  --rail:1240px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;font-weight:500;letter-spacing:-.04em;margin:0}
+
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{max-width:var(--rail);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Inter Tight";font-weight:600;font-size:20px;letter-spacing:-.03em}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--lime);display:grid;place-items:center;font-style:normal;font-size:14px;color:var(--ink)}
+.links{display:flex;gap:26px;margin-left:auto;font-size:15px;color:#333;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:11px 20px;border-radius:8px;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.lime{background:var(--lime);color:var(--lime-ink);box-shadow:inset 0 -1px 0 rgba(0,0,0,.08)}
+.btn.ghost{background:#f4f4f4;color:#333}
+
+.frame{max-width:var(--rail);margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+section{border-bottom:1px solid var(--line)}
+.pad{padding:96px 48px}
+
+.hero{position:relative;overflow:hidden;text-align:center;padding:120px 24px 112px}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.13) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.hero::after{content:"";position:absolute;inset:-20%;background:
+  radial-gradient(40% 35% at 18% 20%,rgba(0,173,100,.16),transparent 70%),
+  radial-gradient(38% 34% at 82% 18%,rgba(98,72,198,.14),transparent 70%),
+  radial-gradient(40% 30% at 30% 85%,rgba(255,139,55,.12),transparent 70%),
+  radial-gradient(35% 30% at 85% 80%,rgba(238,70,188,.10),transparent 70%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:10px;border:1px solid #d9dcda;background:rgba(255,255,255,.8);border-radius:999px;padding:6px 16px 6px 8px;font-size:14px;color:#444}
+.badge b{background:var(--lime);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.hero h1{font-size:clamp(42px,6.4vw,76px);line-height:1.02;max-width:900px;margin:28px auto 22px}
+.hero p{font-size:19px;color:var(--muted);max-width:640px;margin:0 auto 34px}
+.ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.stats{display:flex;justify-content:center;gap:48px;margin-top:56px;flex-wrap:wrap}
+.stats div{text-align:center}
+.stats b{display:block;font-family:"Inter Tight";font-weight:500;font-size:40px;letter-spacing:-.04em;line-height:1.1}
+.stats span{font-size:14px;color:var(--muted)}
+
+.why{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;background:var(--panel);overflow:hidden}
+.why .copy{padding:96px 48px}
+.two-tone{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.two-tone span{color:#a3a8a5;display:block}
+.why p{color:var(--muted);font-size:18px;margin:26px 0 0;max-width:520px}
+.bars{display:flex;flex-direction:column;gap:18px;padding:60px 0 60px 24px}
+.bar{display:flex;align-items:center;gap:14px;color:#fff;font-weight:600;font-size:18px;padding:18px 24px;border-radius:12px 0 0 12px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.12);transition:transform .2s}
+.bar:hover{transform:translateX(-8px)}
+.bar small{margin-left:auto;font-weight:500;opacity:.88;font-size:14px;padding-right:8px}
+.bar svg{width:24px;height:24px;flex:0 0 24px}
+
+.head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.head h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.head p{color:var(--muted);margin:0;max-width:420px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 14px 40px rgba(0,22,13,.08);transform:translateY(-2px)}
+.vis{height:200px;padding:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.vis.g{background:var(--t-green)}.vis.b{background:var(--t-blue)}.vis.p{background:var(--t-pink)}
+.term{background:#0e0f12;color:#d6d9de;border-radius:10px;padding:12px 14px;font:11.5px/1.7 "JetBrains Mono",monospace;box-shadow:0 10px 30px rgba(0,0,0,.18);white-space:pre;overflow:hidden;width:100%}
+.term .k{color:#9be15d}.term .d{color:#7e8590}.term .v{color:#8fb5ff}
+.phone{width:112px;height:196px;border-radius:18px;background:#f4f1ea;border:5px solid #111;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:"Inter Tight";font-weight:600;letter-spacing:-.03em;box-shadow:0 12px 30px rgba(18,100,255,.18);margin-top:40px}
+.phone .w{font-size:19px;line-height:1.05;text-align:center}.phone .w em{color:var(--orange);font-style:normal}
+.phone .st{margin-top:12px;border:3px solid var(--red);color:var(--red);font-size:13px;padding:1px 8px;border-radius:6px;transform:rotate(-8deg)}
+.mail{background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.10);padding:14px 16px;font-size:13px;line-height:1.5;width:100%;max-width:300px}
+.mail b{font-family:"Inter Tight";font-size:15px}
+.mail ul{padding-left:16px;margin:6px 0}
+.mail .s{color:var(--soft)}
+.body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--c)}
+.tag::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--c)}
+.card h3{font-size:23px;line-height:1.2;margin:10px 0 8px}
+.card p{color:var(--muted);font-size:15px;margin:0 0 18px}
+.meta{margin:auto 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;border-top:1px solid var(--line);padding-top:14px}
+.meta dt{color:var(--soft)}.meta dd{margin:0;font-weight:500}
+.more{margin-top:18px;font-weight:600;font-size:15px;display:inline-flex;gap:6px;align-items:center;transition:gap .15s}
+.more:hover{gap:10px}
+
+.dark{background:radial-gradient(80% 60% at 20% 0%,#2a1b5c 0%,#120d24 45%,#09090b 100%);color:#fff}
+.dark .grid2{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.dark h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.dark p{color:#b7b4c6;font-size:18px}
+.dark .term{font-size:13px;padding:18px 20px;background:#0b0b10;border:1px solid #2b2840}
+.parts{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:10px 24px;font-size:15px;color:#d8d5e6}
+.parts li{display:flex;gap:10px}.parts span{font-family:"JetBrains Mono";color:var(--lime)}
+
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.nx{border:1px dashed #cfd3d1;border-radius:14px;padding:22px;background:var(--panel)}
+.nx b{display:block;font-family:"Inter Tight";font-weight:500;font-size:19px;letter-spacing:-.02em;margin-bottom:6px}
+.nx span{color:var(--muted);font-size:15px}
+
+.final{text-align:center;position:relative;overflow:hidden}
+.final::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.12) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:radial-gradient(60% 70% at 50% 50%,#000,transparent);mask-image:radial-gradient(60% 70% at 50% 50%,#000,transparent)}
+.final>*{position:relative}
+.final h2{font-size:clamp(32px,4.4vw,56px);line-height:1.05;margin-bottom:16px}
+.final p{color:var(--muted);font-size:18px;margin:0 0 30px}
+footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--soft);font-size:13px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:960px){
+  .why,.dark .grid2{grid-template-columns:1fr}
+  .bars{padding:0 0 48px 24px}
+  .cards,.next{grid-template-columns:1fr}
+  .links>a:not(.btn){display:none}
+  .pad,.why .copy{padding:64px 20px}
+  .hero{padding:80px 20px}
+  .parts{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+  .stats{gap:28px}
+  .dark .term{font-size:11px}
+}
+
+.doc{display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px;padding:64px 48px 96px}
+.toc{position:sticky;top:88px;align-self:start;font-size:14px}
+.toc b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:12px}
+.toc a{display:block;padding:6px 0 6px 12px;border-left:2px solid var(--line);color:#555}
+.toc a:hover{border-color:var(--c);color:var(--ink)}
+.toc .files{margin-top:28px}
+.toc .files a{font-family:"JetBrains Mono",monospace;font-size:12.5px;border:none;padding:3px 0}
+.rh{padding:72px 48px 56px;background:var(--tint);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.rh::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.12) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000)}
+.rh>*{position:relative}
+.crumb{font-size:14px;color:var(--muted)}.crumb a:hover{color:var(--ink)}
+.rh h1{font-size:clamp(34px,4.6vw,58px);line-height:1.05;max-width:860px;margin:18px 0 16px}
+.rh p{font-size:19px;color:#3d4743;max-width:720px;margin:0}
+.md{min-width:0;max-width:760px;overflow-x:clip}
+.md h2{font-size:32px;line-height:1.15;margin:56px 0 16px;padding-top:8px;scroll-margin-top:90px}
+.md h2:first-child{margin-top:0}
+.md h2 .n{display:inline-block;font:500 14px "JetBrains Mono",monospace;color:var(--c);background:var(--tint);border-radius:6px;padding:3px 8px;margin-right:12px;vertical-align:middle;letter-spacing:0}
+.md h3{font-size:21px;margin:32px 0 10px}
+.md p,.md li{color:#2c3531;font-size:16.5px}
+.md li{margin:6px 0}
+.md a{color:var(--c);text-decoration:underline;text-underline-offset:3px}
+.md code{font:13.5px "JetBrains Mono",monospace;background:#f2f3f2;border-radius:5px;padding:2px 6px;overflow-wrap:anywhere}
+.md pre code{overflow-wrap:normal}
+.md pre{background:#0e0f12;color:#d6d9de;border-radius:12px;padding:18px 20px;overflow-x:auto;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.md pre code{background:none;padding:0;color:inherit;font-size:13px;line-height:1.65}
+.md table{width:100%;border-collapse:collapse;font-size:15px;margin:18px 0;display:block;overflow-x:auto}
+.md th{text-align:left;font-weight:600;border-bottom:2px solid var(--ink);padding:10px 12px 10px 0}
+.md td{border-bottom:1px solid var(--line);padding:10px 12px 10px 0;vertical-align:top;color:#2c3531}
+.md ol li::marker{color:var(--c);font-weight:600}
+.dodo-step{background:var(--lime);border-radius:14px;padding:4px 24px 14px;margin-top:16px}
+.dodo-step h2{margin-top:20px}
+.pn{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);margin-top:64px;padding-top:24px;font-weight:600}
+.pn a:hover{color:var(--c)}
+@media (max-width:960px){.doc{grid-template-columns:minmax(0,1fr);padding:40px 20px 64px;gap:24px}.toc{position:static}.rh{padding:48px 20px 40px}}
+:root{--c:#e83439;--tint:#fdedf8}</style></head>
+<body>
+<header><div class="nav">
+  <a class="brand" href="../index.html"><i>↗</i>Build it</a>
+  <nav class="links"><a href="../index.html#recipes">Recipes</a><a href="../index.html#how">How a recipe works</a>
+  <a class="btn lime" href="https://dodopayments.com/?utm_source=recipes&amp;utm_medium=gallery&amp;utm_campaign=recipe-daily-report-email">Start with Dodo</a></nav>
+</div></header>
+<main class="frame">
+<section class="rh">
+  <div class="crumb"><a href="../index.html#recipes">Recipes</a> / <span class="tag" style="--c:#e83439">Retention</span></div>
+  <h1>The daily report email your customers actually open</h1>
+  <p>Every morning, each paying customer gets one email: what your product did for them yesterday, what it skipped and why, and what&#39;s next. Built from your own database, sent only to people with an active Dodo subscription, and never sent empty.</p>
+</section>
+<div class="doc">
+  <aside class="toc"><b>On this page</b><a href="#what-you-39-ll-have-at-the-end">What you&#39;ll have at the end</a><a href="#who-it-39-s-for-and-what-it-replaces">Who it&#39;s for, and what it replaces</a><a href="#system-design">System design</a><a href="#build-it-with-your-ai">Build it with your AI</a><a href="#make-it-safe">Make it safe</a><a href="#bill-with-dodo">Bill with Dodo</a><a href="#built-and-used-at-zipply">Built and used at Zipply</a>
+    <div class="files"><b>Files</b><a href="../../recipes/daily-report-email/.env.example">.env.example</a><a href="../../recipes/daily-report-email/package.json">package.json</a><a href="../../recipes/daily-report-email/README.md">README.md</a><a href="../../recipes/daily-report-email/schema.sql">schema.sql</a><a href="../../recipes/daily-report-email/vercel.json">vercel.json</a><a href="../../recipes/daily-report-email/api/daily-report.js">api/daily-report.js</a><a href="../../recipes/daily-report-email/api/dodo-webhook.js">api/dodo-webhook.js</a><a href="../../recipes/daily-report-email/api/unsubscribe.js">api/unsubscribe.js</a><a href="../../recipes/daily-report-email/lib/db.mjs">lib/db.mjs</a><a href="../../recipes/daily-report-email/lib/dodo.mjs">lib/dodo.mjs</a><a href="../../recipes/daily-report-email/lib/report.mjs">lib/report.mjs</a><a href="../../recipes/daily-report-email/lib/send.mjs">lib/send.mjs</a><a href="../../recipes/daily-report-email/lib/unsubscribe.mjs">lib/unsubscribe.mjs</a><a href="../../recipes/daily-report-email/scripts/preview.mjs">scripts/preview.mjs</a><a href="../../recipes/daily-report-email/test/report.test.mjs">test/report.test.mjs</a></div></aside>
+  <article class="md"><h2 id="what-you-39-ll-have-at-the-end"><span class="n">01</span>What you&#39;ll have at the end</h2>
+<pre><code>Subject: 2 done for you yesterday
+
+Hi Ana,
+Here&#39;s what Acme did for you yesterday.
+
+Done (2):
+- Published 3 scheduled posts
+- Replied to 2 support tickets
+
+Skipped, and why (1):
+- Skipped 1 post: it repeated Tuesday&#39;s
+
+Next:
+- 4 posts queued for today
+</code></pre>
+<p>Run <code>npm run preview</code> to see the HTML version in your browser.</p>
+<h2 id="who-it-39-s-for-and-what-it-replaces"><span class="n">02</span>Who it&#39;s for, and what it replaces</h2>
+<p>Any product that does work for customers while they&#39;re away: a scheduler, a monitor, an agent, a
+service business. The report is how they notice the work, and noticing the work is why they renew.
+It replaces building a reporting dashboard nobody opens, or a generic weekly-digest tool.</p>
+<h2 id="system-design"><span class="n">03</span>System design</h2>
+<pre><code>Dodo webhook ─▶ api/dodo-webhook.js ─▶ customer.subscription_status, paid_through
+your product ─▶ activity rows (done / skipped / next)
+
+Vercel cron, daily ─▶ api/daily-report.js
+   for each paying customer:
+     yesterday&#39;s rows, in their own time zone
+     nothing done?  ─▶ skip (no empty emails)
+     build email (every number counted from rows) ─▶ Resend
+   ─▶ report_run: sent, skipped with reasons, failed with errors
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Where it runs</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tables</td>
+<td>Neon or Supabase Postgres</td>
+<td>free tier</td>
+</tr>
+<tr>
+<td>Report, webhook, unsubscribe</td>
+<td>Vercel functions</td>
+<td>free tier (one daily cron is allowed on Hobby)</td>
+</tr>
+<tr>
+<td>Sending</td>
+<td>Resend</td>
+<td>free up to 3,000 emails a month</td>
+</tr>
+<tr>
+<td>Billing state</td>
+<td>Dodo Payments webhooks</td>
+<td>included</td>
+</tr>
+</tbody></table>
+<h2 id="build-it-with-your-ai"><span class="n">04</span>Build it with your AI</h2>
+<ol>
+<li><strong>Tables.</strong> &quot;Postgres tables for customers (email, time zone, Dodo subscription id, status,
+paid-through date, unsubscribed_at), activity rows (customer, kind done/skipped/next, title,
+detail, url) and a run log that stores skipped and failed customers with reasons.&quot;
+→ <code>schema.sql</code></li>
+<li><strong>Gate.</strong> &quot;A pure function: send only if the customer is paying (active, or cancelled with a
+paid-through date still ahead), hasn&#39;t unsubscribed, and had at least one &#39;done&#39; row yesterday.
+Return the reason when it says no. Tests for each case.&quot; → <code>lib/report.mjs</code></li>
+<li><strong>Template.</strong> &quot;A mobile-first HTML email plus a plain-text version from those rows. The subject
+and every count come from the rows. Escape all HTML.&quot; → <code>buildEmail</code></li>
+<li><strong>Yesterday.</strong> &quot;Yesterday&#39;s start and end in UTC for a customer&#39;s IANA time zone, correct
+across daylight saving, no libraries.&quot; → <code>yesterdayWindow</code></li>
+<li><strong>Billing.</strong> &quot;A Vercel function for Dodo Payments webhooks: verify the Standard Webhooks signature
+on the raw body, then map subscription.active / renewed / updated / on_hold / cancelled / expired
+to the customer row.&quot; → <code>api/dodo-webhook.js</code>, <code>lib/dodo.mjs</code></li>
+<li><strong>Unsubscribe.</strong> &quot;A signed one-click unsubscribe link (HMAC of the email), a route that accepts
+GET and POST, and List-Unsubscribe headers on every send.&quot; → <code>lib/unsubscribe.mjs</code>, <code>api/unsubscribe.js</code></li>
+</ol>
+<h3>Run it</h3>
+<pre><code>npm install &amp;&amp; npm test
+cp .env.example .env
+psql &quot;$DATABASE_URL&quot; -f schema.sql
+npm run preview
+vercel deploy --prod        # the cron in vercel.json starts the next day
+</code></pre>
+<p>In the Dodo dashboard: Developer → Webhooks → add <code>https://&lt;your-app&gt;.vercel.app/api/dodo-webhook</code>,
+subscribe to the <code>subscription.*</code> events, and put the signing key in <code>DODO_WEBHOOK_KEY</code>. Check the
+Event catalog tab there for the exact list your account sends.</p>
+<h2 id="make-it-safe"><span class="n">05</span>Make it safe</h2>
+<ul>
+<li><strong>Never send an empty report.</strong> One &quot;nothing happened&quot; email teaches people to skip the next ten.</li>
+<li><strong>Numbers come from the database, never from a model.</strong> If you add an AI-written summary line,
+give it the counts; never let it produce them.</li>
+<li><strong>Log what failed, not just how many sent.</strong> A run where every send failed looks fine if the log
+only says &quot;ran&quot;. <code>report_run</code> keeps each skipped and failed customer with the reason.</li>
+<li><strong>Verify the webhook signature on the raw body.</strong> Parse first and the signature check fails, or
+worse, gets removed &quot;to make it work&quot;.</li>
+<li><strong>Cancelled is not the same as gone.</strong> A customer who cancels keeps what they paid for until
+<code>paid_through</code>; keep reporting until then.</li>
+<li><strong>Send reports from a subdomain</strong> (<code>send.yourdomain.com</code>), apart from your personal and cold mail.</li>
+</ul>
+<div class="dodo-step"><h2 id="bill-with-dodo"><span class="n">06</span>Bill with Dodo</h2>
+<p>The report is gated on the Dodo subscription, so it&#39;s a paid feature by construction:</p>
+<ul>
+<li>Sell the plan with a <a href="https://docs.dodopayments.com/developer-resources/checkout-session.md">Checkout Session</a>
+or a payment link; the <code>subscription.active</code> webhook turns the reports on.</li>
+<li>When a payment fails, Dodo moves the subscription to <code>on_hold</code> and the reports stop. When the
+card is fixed, the next renewal event turns them back on, with no code from you.</li>
+<li>Add a &quot;manage your plan&quot; link to the footer pointing to Dodo&#39;s customer portal, so people can
+update a card without emailing you.</li>
+</ul>
+<p>Start with <a href="https://dodopayments.com/?utm_source=recipes&utm_medium=gallery&utm_campaign=recipe-daily-report">Dodo Payments</a>
+in test mode: test webhooks hit the same endpoint.</p>
+</div><h2 id="built-and-used-at-zipply"><span class="n">07</span>Built and used at Zipply</h2>
+<p>Zipply sends every paying customer a report each morning: the roles it scored, applied to and
+skipped for them. The rules in part 5 are the ones it learned, in
+particular &quot;log what failed&quot;: in one week, three of its scheduled jobs showed success while quietly
+skipping customers, because each log recorded what the job did and never what it failed to do.</p>
+
+    <div class="pn"><span><a href="video-ad-engine.html">← Video ad engine: one JSON file in, beat-synced vertical ads out</a></span>
+    <span><a href="../index.html#recipes">All recipes →</a></span></div>
+  </article>
+</div>
+</main>
+<footer><span>Written by the founder of Zipply, a Dodo Payments merchant. Code is MIT licensed.</span><span>An independent project. Not affiliated with or endorsed by Dodo Payments.</span></footer>
+</body></html>

@@ -1,0 +1,7 @@
+{
+  "name": "build-it-recipes",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "node site/build.mjs" },
+  "devDependencies": { "marked": "^14.1.0" }
+}

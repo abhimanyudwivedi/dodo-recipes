@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cold-email engine that sends in each person's morning</title>
+<meta name="description" content="Personal cold email, written with your own AI, reviewed by you, and sent one at a time at 9am in **each recipient's own time zone**. Anyone who replies or unsubscribes is never emailed again. Runs on ">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#00160d;--muted:#666;--soft:#8a8f8c;--line:#e8e8e8;--canvas:#fff;--panel:#fafafa;
+  --lime:#c6fe1e;--lime-ink:#00160d;
+  --green:#00ad64;--blue:#1264ff;--red:#e83439;--orange:#ff8b37;--pink:#ee46bc;
+  --t-green:#e6fbf2;--t-blue:#e7f0ff;--t-pink:#fdedf8;--t-yellow:#fffbed;
+  --rail:1240px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;font-weight:500;letter-spacing:-.04em;margin:0}
+
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{max-width:var(--rail);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Inter Tight";font-weight:600;font-size:20px;letter-spacing:-.03em}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--lime);display:grid;place-items:center;font-style:normal;font-size:14px;color:var(--ink)}
+.links{display:flex;gap:26px;margin-left:auto;font-size:15px;color:#333;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:11px 20px;border-radius:8px;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.lime{background:var(--lime);color:var(--lime-ink);box-shadow:inset 0 -1px 0 rgba(0,0,0,.08)}
+.btn.ghost{background:#f4f4f4;color:#333}
+
+.frame{max-width:var(--rail);margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+section{border-bottom:1px solid var(--line)}
+.pad{padding:96px 48px}
+
+.hero{position:relative;overflow:hidden;text-align:center;padding:120px 24px 112px}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.13) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.hero::after{content:"";position:absolute;inset:-20%;background:
+  radial-gradient(40% 35% at 18% 20%,rgba(0,173,100,.16),transparent 70%),
+  radial-gradient(38% 34% at 82% 18%,rgba(98,72,198,.14),transparent 70%),
+  radial-gradient(40% 30% at 30% 85%,rgba(255,139,55,.12),transparent 70%),
+  radial-gradient(35% 30% at 85% 80%,rgba(238,70,188,.10),transparent 70%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:10px;border:1px solid #d9dcda;background:rgba(255,255,255,.8);border-radius:999px;padding:6px 16px 6px 8px;font-size:14px;color:#444}
+.badge b{background:var(--lime);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.hero h1{font-size:clamp(42px,6.4vw,76px);line-height:1.02;max-width:900px;margin:28px auto 22px}
+.hero p{font-size:19px;color:var(--muted);max-width:640px;margin:0 auto 34px}
+.ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.stats{display:flex;justify-content:center;gap:48px;margin-top:56px;flex-wrap:wrap}
+.stats div{text-align:center}
+.stats b{display:block;font-family:"Inter Tight";font-weight:500;font-size:40px;letter-spacing:-.04em;line-height:1.1}
+.stats span{font-size:14px;color:var(--muted)}
+
+.why{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;background:var(--panel);overflow:hidden}
+.why .copy{padding:96px 48px}
+.two-tone{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.two-tone span{color:#a3a8a5;display:block}
+.why p{color:var(--muted);font-size:18px;margin:26px 0 0;max-width:520px}
+.bars{display:flex;flex-direction:column;gap:18px;padding:60px 0 60px 24px}
+.bar{display:flex;align-items:center;gap:14px;color:#fff;font-weight:600;font-size:18px;padding:18px 24px;border-radius:12px 0 0 12px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.12);transition:transform .2s}
+.bar:hover{transform:translateX(-8px)}
+.bar small{margin-left:auto;font-weight:500;opacity:.88;font-size:14px;padding-right:8px}
+.bar svg{width:24px;height:24px;flex:0 0 24px}
+
+.head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.head h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.head p{color:var(--muted);margin:0;max-width:420px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 14px 40px rgba(0,22,13,.08);transform:translateY(-2px)}
+.vis{height:200px;padding:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.vis.g{background:var(--t-green)}.vis.b{background:var(--t-blue)}.vis.p{background:var(--t-pink)}
+.term{background:#0e0f12;color:#d6d9de;border-radius:10px;padding:12px 14px;font:11.5px/1.7 "JetBrains Mono",monospace;box-shadow:0 10px 30px rgba(0,0,0,.18);white-space:pre;overflow:hidden;width:100%}
+.term .k{color:#9be15d}.term .d{color:#7e8590}.term .v{color:#8fb5ff}
+.phone{width:112px;height:196px;border-radius:18px;background:#f4f1ea;border:5px solid #111;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:"Inter Tight";font-weight:600;letter-spacing:-.03em;box-shadow:0 12px 30px rgba(18,100,255,.18);margin-top:40px}
+.phone .w{font-size:19px;line-height:1.05;text-align:center}.phone .w em{color:var(--orange);font-style:normal}
+.phone .st{margin-top:12px;border:3px solid var(--red);color:var(--red);font-size:13px;padding:1px 8px;border-radius:6px;transform:rotate(-8deg)}
+.mail{background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.10);padding:14px 16px;font-size:13px;line-height:1.5;width:100%;max-width:300px}
+.mail b{font-family:"Inter Tight";font-size:15px}
+.mail ul{padding-left:16px;margin:6px 0}
+.mail .s{color:var(--soft)}
+.body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--c)}
+.tag::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--c)}
+.card h3{font-size:23px;line-height:1.2;margin:10px 0 8px}
+.card p{color:var(--muted);font-size:15px;margin:0 0 18px}
+.meta{margin:auto 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;border-top:1px solid var(--line);padding-top:14px}
+.meta dt{color:var(--soft)}.meta dd{margin:0;font-weight:500}
+.more{margin-top:18px;font-weight:600;font-size:15px;display:inline-flex;gap:6px;align-items:center;transition:gap .15s}
+.more:hover{gap:10px}
+
+.dark{background:radial-gradient(80% 60% at 20% 0%,#2a1b5c 0%,#120d24 45%,#09090b 100%);color:#fff}
+.dark .grid2{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.dark h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.dark p{color:#b7b4c6;font-size:18px}
+.dark .term{font-size:13px;padding:18px 20px;background:#0b0b10;border:1px solid #2b2840}
+.parts{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:10px 24px;font-size:15px;color:#d8d5e6}
+.parts li{display:flex;gap:10px}.parts span{font-family:"JetBrains Mono";color:var(--lime)}
+
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.nx{border:1px dashed #cfd3d1;border-radius:14px;padding:22px;background:var(--panel)}
+.nx b{display:block;font-family:"Inter Tight";font-weight:500;font-size:19px;letter-spacing:-.02em;margin-bottom:6px}
+.nx span{color:var(--muted);font-size:15px}
+
+.final{text-align:center;position:relative;overflow:hidden}
+.final::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.12) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:radial-gradient(60% 70% at 50% 50%,#000,transparent);mask-image:radial-gradient(60% 70% at 50% 50%,#000,transparent)}
+.final>*{position:relative}
+.final h2{font-size:clamp(32px,4.4vw,56px);line-height:1.05;margin-bottom:16px}
+.final p{color:var(--muted);font-size:18px;margin:0 0 30px}
+footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--soft);font-size:13px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:960px){
+  .why,.dark .grid2{grid-template-columns:1fr}
+  .bars{padding:0 0 48px 24px}
+  .cards,.next{grid-template-columns:1fr}
+  .links>a:not(.btn){display:none}
+  .pad,.why .copy{padding:64px 20px}
+  .hero{padding:80px 20px}
+  .parts{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+  .stats{gap:28px}
+  .dark .term{font-size:11px}
+}
+
+.doc{display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px;padding:64px 48px 96px}
+.toc{position:sticky;top:88px;align-self:start;font-size:14px}
+.toc b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:12px}
+.toc a{display:block;padding:6px 0 6px 12px;border-left:2px solid var(--line);color:#555}
+.toc a:hover{border-color:var(--c);color:var(--ink)}
+.toc .files{margin-top:28px}
+.toc .files a{font-family:"JetBrains Mono",monospace;font-size:12.5px;border:none;padding:3px 0}
+.rh{padding:72px 48px 56px;background:var(--tint);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.rh::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.12) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000)}
+.rh>*{position:relative}
+.crumb{font-size:14px;color:var(--muted)}.crumb a:hover{color:var(--ink)}
+.rh h1{font-size:clamp(34px,4.6vw,58px);line-height:1.05;max-width:860px;margin:18px 0 16px}
+.rh p{font-size:19px;color:#3d4743;max-width:720px;margin:0}
+.md{min-width:0;max-width:760px;overflow-x:clip}
+.md h2{font-size:32px;line-height:1.15;margin:56px 0 16px;padding-top:8px;scroll-margin-top:90px}
+.md h2:first-child{margin-top:0}
+.md h2 .n{display:inline-block;font:500 14px "JetBrains Mono",monospace;color:var(--c);background:var(--tint);border-radius:6px;padding:3px 8px;margin-right:12px;vertical-align:middle;letter-spacing:0}
+.md h3{font-size:21px;margin:32px 0 10px}
+.md p,.md li{color:#2c3531;font-size:16.5px}
+.md li{margin:6px 0}
+.md a{color:var(--c);text-decoration:underline;text-underline-offset:3px}
+.md code{font:13.5px "JetBrains Mono",monospace;background:#f2f3f2;border-radius:5px;padding:2px 6px;overflow-wrap:anywhere}
+.md pre code{overflow-wrap:normal}
+.md pre{background:#0e0f12;color:#d6d9de;border-radius:12px;padding:18px 20px;overflow-x:auto;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.md pre code{background:none;padding:0;color:inherit;font-size:13px;line-height:1.65}
+.md table{width:100%;border-collapse:collapse;font-size:15px;margin:18px 0;display:block;overflow-x:auto}
+.md th{text-align:left;font-weight:600;border-bottom:2px solid var(--ink);padding:10px 12px 10px 0}
+.md td{border-bottom:1px solid var(--line);padding:10px 12px 10px 0;vertical-align:top;color:#2c3531}
+.md ol li::marker{color:var(--c);font-weight:600}
+.dodo-step{background:var(--lime);border-radius:14px;padding:4px 24px 14px;margin-top:16px}
+.dodo-step h2{margin-top:20px}
+.pn{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);margin-top:64px;padding-top:24px;font-weight:600}
+.pn a:hover{color:var(--c)}
+@media (max-width:960px){.doc{grid-template-columns:minmax(0,1fr);padding:40px 20px 64px;gap:24px}.toc{position:static}.rh{padding:48px 20px 40px}}
+:root{--c:#00ad64;--tint:#e6fbf2}</style></head>
+<body>
+<header><div class="nav">
+  <a class="brand" href="../index.html"><i>↗</i>Build it</a>
+  <nav class="links"><a href="../index.html#recipes">Recipes</a><a href="../index.html#how">How a recipe works</a>
+  <a class="btn lime" href="https://dodopayments.com/?utm_source=recipes&amp;utm_medium=gallery&amp;utm_campaign=recipe-cold-email-engine">Start with Dodo</a></nav>
+</div></header>
+<main class="frame">
+<section class="rh">
+  <div class="crumb"><a href="../index.html#recipes">Recipes</a> / <span class="tag" style="--c:#00ad64">Outreach</span></div>
+  <h1>Cold-email engine that sends in each person's morning</h1>
+  <p>Personal cold email, written with your own AI, reviewed by you, and sent one at a time at 9am in <strong>each recipient&#39;s own time zone</strong>. Anyone who replies or unsubscribes is never emailed again. Runs on free tiers.</p>
+</section>
+<div class="doc">
+  <aside class="toc"><b>On this page</b><a href="#what-you-39-ll-have-at-the-end">What you&#39;ll have at the end</a><a href="#who-it-39-s-for-and-what-it-replaces">Who it&#39;s for, and what it replaces</a><a href="#system-design">System design</a><a href="#build-it-with-your-ai">Build it with your AI</a><a href="#make-it-safe">Make it safe</a><a href="#charge-for-it-with-dodo">Charge for it with Dodo</a><a href="#built-and-used-at-zipply">Built and used at Zipply</a>
+    <div class="files"><b>Files</b><a href="../../recipes/cold-email-engine/.env.example">.env.example</a><a href="../../recipes/cold-email-engine/package.json">package.json</a><a href="../../recipes/cold-email-engine/README.md">README.md</a><a href="../../recipes/cold-email-engine/schema.sql">schema.sql</a><a href="../../recipes/cold-email-engine/vercel.json">vercel.json</a><a href="../../recipes/cold-email-engine/api/send-due.js">api/send-due.js</a><a href="../../recipes/cold-email-engine/lib/checks.mjs">lib/checks.mjs</a><a href="../../recipes/cold-email-engine/lib/db.mjs">lib/db.mjs</a><a href="../../recipes/cold-email-engine/lib/mail.mjs">lib/mail.mjs</a><a href="../../recipes/cold-email-engine/lib/schedule.mjs">lib/schedule.mjs</a><a href="../../recipes/cold-email-engine/scripts/queue.mjs">scripts/queue.mjs</a><a href="../../recipes/cold-email-engine/scripts/status.mjs">scripts/status.mjs</a><a href="../../recipes/cold-email-engine/test/checks.test.mjs">test/checks.test.mjs</a><a href="../../recipes/cold-email-engine/test/schedule.test.mjs">test/schedule.test.mjs</a></div></aside>
+  <article class="md"><h2 id="what-you-39-ll-have-at-the-end"><span class="n">01</span>What you&#39;ll have at the end</h2>
+<pre><code>$ node scripts/queue.mjs drafts/2026-10-13.json
+2026-10-13T08:00Z  09:00 Europe/London        first    di@example.com
+2026-10-13T14:00Z  09:00 America/Chicago      first    ana@example.com
+2026-10-13T14:15Z  09:15 America/Chicago      first    bo@example.com
+2026-10-13T16:00Z  09:00 America/Phoenix      first    cy@example.com
+</code></pre>
+<p>Each email leaves your real mailbox at that moment, shows in your Sent folder, and follow-ups land
+in the same thread as the first email.</p>
+<h2 id="who-it-39-s-for-and-what-it-replaces"><span class="n">02</span>Who it&#39;s for, and what it replaces</h2>
+<p>Founders who send 10-20 hand-written cold emails a day and want them to arrive when people read
+mail, without paying for a sequencer (Instantly, Lemlist, Apollo sequences: roughly $40-100 a month).
+This is not a bulk mailer. It sends what you approved, slowly, from your own mailbox.</p>
+<h2 id="system-design"><span class="n">03</span>System design</h2>
+<pre><code>leads ─▶ drafts (your Claude/ChatGPT, &quot;verify every fact&quot; rule) ─▶ drafts/&lt;date&gt;.json (you approve)
+      ─▶ scripts/queue.mjs   exact UTC send time per person, daylight-saving aware
+      ─▶ Postgres table outreach_email
+      ─▶ api/send-due.js  ◀── cron-job.org, every 5 min, weekdays, send window only
+           before each send: unsubscribed / customer / replied? ─▶ skip
+           more than 3 h late? ─▶ missed (never sent at midnight)
+      ─▶ mail API: new email, or reply in the original thread
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Where it runs</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Queue table</td>
+<td>Neon or Supabase Postgres</td>
+<td>free tier</td>
+</tr>
+<tr>
+<td><code>api/send-due.js</code></td>
+<td>Vercel serverless function</td>
+<td>free tier</td>
+</tr>
+<tr>
+<td>Pinger</td>
+<td>cron-job.org (Vercel&#39;s free crons run once a day)</td>
+<td>free</td>
+</tr>
+<tr>
+<td>Mail</td>
+<td>Zoho Mail API (send, reply in thread, reply detection) or Resend (send only)</td>
+<td>your mailbox</td>
+</tr>
+</tbody></table>
+<h2 id="build-it-with-your-ai"><span class="n">04</span>Build it with your AI</h2>
+<p>Paste these into Claude or ChatGPT in order. Each one produces one working piece; the files in this
+folder are what they produced for us, so you can compare.</p>
+<ol>
+<li><strong>Queue.</strong> &quot;Write a Postgres table for queued emails: unique key per person per day per kind,
+recipient, IANA time zone, kind (first/followup), subject, body, exact send time, status
+(queued/sending/sent/skipped/error/missed), detail. Plus a do_not_email table.&quot; → <code>schema.sql</code></li>
+<li><strong>Drafts.</strong> &quot;For each lead, write a 50-120 word email. First line says where I found them. Then
+one thing only they could receive, taken from their own material, and every fact must be checked
+against the source I give you. One question at the end. No pitch before the last two sentences.&quot;</li>
+<li><strong>Scheduler.</strong> &quot;In plain Node with no libraries, convert &#39;HH:MM on YYYY-MM-DD in this IANA zone&#39;
+to a UTC Date, correct across daylight saving. Spread each zone&#39;s sends 15 minutes apart from
+9:00. Write node:test tests for New York in October and November, Arizona and India.&quot;
+→ <code>lib/schedule.mjs</code>, <code>test/schedule.test.mjs</code></li>
+<li><strong>Sender.</strong> &quot;A Vercel function protected by a Bearer secret: take up to 6 due rows, claim each
+one (status sending) before doing anything, run the checks, send, and mark it sent only after the
+mail API accepts it.&quot; → <code>api/send-due.js</code></li>
+<li><strong>Reply detection.</strong> &quot;Search the mailbox for mail from this address and confirm the sender
+matches exactly in code; don&#39;t trust the search filter.&quot; → <code>lib/mail.mjs</code>, <code>lib/checks.mjs</code></li>
+<li><strong>Status.</strong> &quot;Per day: sent, skipped, errors, missed, the latest reasons, and what&#39;s next.&quot;
+→ <code>scripts/status.mjs</code></li>
+</ol>
+<h3>Run it</h3>
+<pre><code>npm install
+cp .env.example .env            # fill it in
+psql &quot;$DATABASE_URL&quot; -f schema.sql
+npm test
+node --env-file=.env scripts/queue.mjs drafts/2026-10-13.json          # dry run
+node --env-file=.env scripts/queue.mjs drafts/2026-10-13.json --go
+vercel deploy --prod            # set the same env vars in Vercel
+</code></pre>
+<p>Then on cron-job.org: URL <code>https://&lt;your-app&gt;.vercel.app/api/send-due</code>, header
+<code>Authorization: Bearer &lt;CRON_SECRET&gt;</code>, schedule every 5 minutes only in the hours your recipients&#39;
+mornings fall in (for the US from Europe or Asia, roughly 13:00-20:00 UTC), Monday to Friday.</p>
+<h2 id="make-it-safe"><span class="n">05</span>Make it safe</h2>
+<p>Every one of these was learned by getting it wrong first.</p>
+<ul>
+<li><strong>Check exact addresses in code.</strong> Zoho&#39;s search ignored <code>from:</code> and returned every message, so
+every prospect looked like they had replied. <code>sender:</code> works, and the code still compares the
+address itself.</li>
+<li><strong>Skip, don&#39;t send late.</strong> Anything more than 3 hours late is marked missed. A send at midnight
+their time is worse than no send.</li>
+<li><strong>Claim before sending.</strong> A row moves to <code>sending</code> in one conditional update before anything else,
+so two overlapping runs can never send the same email twice.</li>
+<li><strong>Record a send only after the provider accepts it.</strong> Otherwise your record says someone was
+emailed when they were not, and the follow-up goes out cold.</li>
+<li><strong>Queue a week at most.</strong> The checks run at send time, but the shorter the queue, the fewer ways
+to email someone who already answered.</li>
+<li><strong>Use a separate domain for cold email.</strong> Your product&#39;s transactional mail should not share its
+reputation.</li>
+<li><strong>Ping only in the send window.</strong> It keeps a free-tier function&#39;s CPU use small.</li>
+<li><strong>Unsubscribe means never again, with no reply.</strong> Add them to <code>do_not_email</code>.</li>
+</ul>
+<div class="dodo-step"><h2 id="charge-for-it-with-dodo"><span class="n">06</span>Charge for it with Dodo</h2>
+<p>Cold email ends in a sale or it is a hobby. Two ways to close the loop with
+<a href="https://dodopayments.com/?utm_source=recipes&utm_medium=gallery&utm_campaign=recipe-cold-email">Dodo Payments</a>,
+which acts as merchant of record, so sales tax and VAT are handled for you:</p>
+<ul>
+<li><strong>Reply with a payment link.</strong> When someone says yes, send a Dodo
+<a href="https://docs.dodopayments.com/changelog/v1.70.0.md">payment link</a> for the product or service, one
+link per offer so you can see which email led to which sale. No checkout page to build.</li>
+<li><strong>Sell the engine.</strong> Host this for other founders as a small subscription:
+<a href="https://docs.dodopayments.com/developer-resources/checkout-session.md">Checkout Sessions</a> for
+sign-up, the <a href="https://docs.dodopayments.com/developer-resources/subscription-integration-guide.md">subscription guide</a>
+for monthly billing, and a webhook that turns sending on only while the subscription is active.</li>
+</ul>
+<p>Try it with a test-mode link first: <!-- TODO: test-mode Dodo payment link --></p>
+</div><h2 id="built-and-used-at-zipply"><span class="n">07</span>Built and used at Zipply</h2>
+<p>Zipply is a job-search concierge. Its founder sends personal emails to people job hunting, written
+about each person&#39;s own post, and the engine this recipe is rewritten from has sent them since 8 October 2026: each one at that
+person&#39;s morning, follow-ups in the original thread, and anyone who replied skipped automatically.
+The safety rules in part 5 come from building it.</p>
+
+    <div class="pn"><span><a href="../index.html#recipes">← All recipes</a></span>
+    <span><a href="video-ad-engine.html">Video ad engine: one JSON file in, beat-synced vertical ads out →</a></span></div>
+  </article>
+</div>
+</main>
+<footer><span>Written by the founder of Zipply, a Dodo Payments merchant. Code is MIT licensed.</span><span>An independent project. Not affiliated with or endorsed by Dodo Payments.</span></footer>
+</body></html>
