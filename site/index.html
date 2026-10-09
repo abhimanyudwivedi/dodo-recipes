@@ -3,113 +3,248 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Build It With Your AI</title>
+<title>Build It Recipes</title>
 <meta name="description" content="Complete, working growth tools for founders: a cold-email engine, a video ad engine and a daily report email. Built with your own Claude or ChatGPT, run on free tiers, and paid for through Dodo Payments.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f1ea;--card:#fffdf8;--ink:#141414;--muted:#5d5a55;--line:#e3ded3;--accent:#ff5a36;--chip:#ffe3d6;--code:#1b1b1b}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121211;--card:#1c1b19;--ink:#f2efe8;--muted:#a7a29a;--line:#302e2a;--accent:#ff7a5c;--chip:#3a2219;--code:#0b0b0a}}
-:root[data-theme="dark"]{--bg:#121211;--card:#1c1b19;--ink:#f2efe8;--muted:#a7a29a;--line:#302e2a;--accent:#ff7a5c;--chip:#3a2219;--code:#0b0b0a}
+:root{
+  --ink:#00160d;--muted:#666;--soft:#8a8f8c;--line:#e8e8e8;--canvas:#fff;--panel:#fafafa;
+  --lime:#c6fe1e;--lime-ink:#00160d;
+  --green:#00ad64;--blue:#1264ff;--red:#e83439;--orange:#ff8b37;--pink:#ee46bc;
+  --t-green:#e6fbf2;--t-blue:#e7f0ff;--t-pink:#fdedf8;--t-yellow:#fffbed;
+  --rail:1240px;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif}
-.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
-header{padding:72px 0 40px}
-.kicker{font:500 13px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
-h1{font-weight:900;font-size:clamp(40px,7vw,76px);line-height:1;letter-spacing:-.045em;margin:16px 0 20px;max-width:900px}
-.lede{font-size:20px;color:var(--muted);max-width:680px;margin:0}
-.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:40px 0 0;padding:0;list-style:none}
-.how li{border-top:2px solid var(--ink);padding-top:12px;font-size:15px;color:var(--muted)}
-.how b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
-h2{font-size:28px;letter-spacing:-.03em;margin:64px 0 20px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;display:flex;flex-direction:column}
-.card h3{font-size:22px;line-height:1.2;letter-spacing:-.025em;margin:12px 0 10px}
-.card p{margin:0 0 16px;color:var(--muted);font-size:15px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font:500 12px/1 "JetBrains Mono",monospace;background:var(--chip);color:var(--ink);padding:6px 9px;border-radius:999px}
-.meta{margin:auto 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
-.meta dt{color:var(--muted)}.meta dd{margin:0;font-weight:600}
-.btn{display:inline-block;margin-top:18px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:700;padding:12px 18px;border-radius:12px;text-align:center}
-.btn:hover{background:var(--accent);color:#141414}
-.diagram{background:var(--code);color:#e9e6df;border-radius:18px;padding:22px;font:500 13px/1.6 "JetBrains Mono",monospace;overflow-x:auto;white-space:pre}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
-.next{list-style:none;padding:0;margin:0}.next li{padding:12px 0;border-bottom:1px solid var(--line)}
-.next span{color:var(--muted);font-size:14px;display:block}
-.dodo{background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:28px;margin-top:64px}
-.dodo h2{margin-top:0}
-footer{padding:48px 0 64px;color:var(--muted);font-size:14px}
-a{color:inherit}
-@media (max-width:860px){.grid,.how,.two{grid-template-columns:1fr}header{padding-top:48px}}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;font-weight:500;letter-spacing:-.04em;margin:0}
+
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{max-width:var(--rail);margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Inter Tight";font-weight:600;font-size:20px;letter-spacing:-.03em}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--lime);display:grid;place-items:center;font-style:normal;font-size:14px;color:var(--ink)}
+.links{display:flex;gap:26px;margin-left:auto;font-size:15px;color:#333;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:11px 20px;border-radius:8px;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.lime{background:var(--lime);color:var(--lime-ink);box-shadow:inset 0 -1px 0 rgba(0,0,0,.08)}
+.btn.ghost{background:#f4f4f4;color:#333}
+
+.frame{max-width:var(--rail);margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+section{border-bottom:1px solid var(--line)}
+.pad{padding:96px 48px}
+
+.hero{position:relative;overflow:hidden;text-align:center;padding:120px 24px 112px}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.13) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.hero::after{content:"";position:absolute;inset:-20%;background:
+  radial-gradient(40% 35% at 18% 20%,rgba(0,173,100,.16),transparent 70%),
+  radial-gradient(38% 34% at 82% 18%,rgba(98,72,198,.14),transparent 70%),
+  radial-gradient(40% 30% at 30% 85%,rgba(255,139,55,.12),transparent 70%),
+  radial-gradient(35% 30% at 85% 80%,rgba(238,70,188,.10),transparent 70%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:10px;border:1px solid #d9dcda;background:rgba(255,255,255,.8);border-radius:999px;padding:6px 16px 6px 8px;font-size:14px;color:#444}
+.badge b{background:var(--lime);border-radius:999px;padding:2px 10px;font-weight:600;color:var(--ink)}
+.hero h1{font-size:clamp(42px,6.4vw,76px);line-height:1.02;max-width:900px;margin:28px auto 22px}
+.hero p{font-size:19px;color:var(--muted);max-width:640px;margin:0 auto 34px}
+.ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.stats{display:flex;justify-content:center;gap:48px;margin-top:56px;flex-wrap:wrap}
+.stats div{text-align:center}
+.stats b{display:block;font-family:"Inter Tight";font-weight:500;font-size:40px;letter-spacing:-.04em;line-height:1.1}
+.stats span{font-size:14px;color:var(--muted)}
+
+.why{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;background:var(--panel);overflow:hidden}
+.why .copy{padding:96px 48px}
+.two-tone{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.two-tone span{color:#a3a8a5;display:block}
+.why p{color:var(--muted);font-size:18px;margin:26px 0 0;max-width:520px}
+.bars{display:flex;flex-direction:column;gap:18px;padding:60px 0 60px 24px}
+.bar{display:flex;align-items:center;gap:14px;color:#fff;font-weight:600;font-size:18px;padding:18px 24px;border-radius:12px 0 0 12px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.12);transition:transform .2s}
+.bar:hover{transform:translateX(-8px)}
+.bar small{margin-left:auto;font-weight:500;opacity:.88;font-size:14px;padding-right:8px}
+.bar svg{width:24px;height:24px;flex:0 0 24px}
+
+.head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.head h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.head p{color:var(--muted);margin:0;max-width:420px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 14px 40px rgba(0,22,13,.08);transform:translateY(-2px)}
+.vis{height:200px;padding:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.vis.g{background:var(--t-green)}.vis.b{background:var(--t-blue)}.vis.p{background:var(--t-pink)}
+.term{background:#0e0f12;color:#d6d9de;border-radius:10px;padding:12px 14px;font:11.5px/1.7 "JetBrains Mono",monospace;box-shadow:0 10px 30px rgba(0,0,0,.18);white-space:pre;overflow:hidden;width:100%}
+.term .k{color:#9be15d}.term .d{color:#7e8590}.term .v{color:#8fb5ff}
+.phone{width:112px;height:196px;border-radius:18px;background:#f4f1ea;border:5px solid #111;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:"Inter Tight";font-weight:600;letter-spacing:-.03em;box-shadow:0 12px 30px rgba(18,100,255,.18);margin-top:40px}
+.phone .w{font-size:19px;line-height:1.05;text-align:center}.phone .w em{color:var(--orange);font-style:normal}
+.phone .st{margin-top:12px;border:3px solid var(--red);color:var(--red);font-size:13px;padding:1px 8px;border-radius:6px;transform:rotate(-8deg)}
+.mail{background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.10);padding:14px 16px;font-size:13px;line-height:1.5;width:100%;max-width:300px}
+.mail b{font-family:"Inter Tight";font-size:15px}
+.mail ul{padding-left:16px;margin:6px 0}
+.mail .s{color:var(--soft)}
+.body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--c)}
+.tag::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--c)}
+.card h3{font-size:23px;line-height:1.2;margin:10px 0 8px}
+.card p{color:var(--muted);font-size:15px;margin:0 0 18px}
+.meta{margin:auto 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;border-top:1px solid var(--line);padding-top:14px}
+.meta dt{color:var(--soft)}.meta dd{margin:0;font-weight:500}
+.more{margin-top:18px;font-weight:600;font-size:15px;display:inline-flex;gap:6px;align-items:center;transition:gap .15s}
+.more:hover{gap:10px}
+
+.dark{background:radial-gradient(80% 60% at 20% 0%,#2a1b5c 0%,#120d24 45%,#09090b 100%);color:#fff}
+.dark .grid2{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.dark h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1}
+.dark p{color:#b7b4c6;font-size:18px}
+.dark .term{font-size:13px;padding:18px 20px;background:#0b0b10;border:1px solid #2b2840}
+.parts{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,auto);grid-auto-flow:column;gap:10px 24px;font-size:15px;color:#d8d5e6}
+.parts li{display:flex;gap:10px}.parts span{font-family:"JetBrains Mono";color:var(--lime)}
+
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.nx{border:1px dashed #cfd3d1;border-radius:14px;padding:22px;background:var(--panel)}
+.nx b{display:block;font-family:"Inter Tight";font-weight:500;font-size:19px;letter-spacing:-.02em;margin-bottom:6px}
+.nx span{color:var(--muted);font-size:15px}
+
+.final{text-align:center;position:relative;overflow:hidden}
+.final::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,22,13,.12) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:radial-gradient(60% 70% at 50% 50%,#000,transparent);mask-image:radial-gradient(60% 70% at 50% 50%,#000,transparent)}
+.final>*{position:relative}
+.final h2{font-size:clamp(32px,4.4vw,56px);line-height:1.05;margin-bottom:16px}
+.final p{color:var(--muted);font-size:18px;margin:0 0 30px}
+footer{max-width:var(--rail);margin:0 auto;padding:28px 24px 48px;color:var(--soft);font-size:13px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:960px){
+  .why,.dark .grid2{grid-template-columns:1fr}
+  .bars{padding:0 0 48px 24px}
+  .cards,.next{grid-template-columns:1fr}
+  .links>a:not(.btn){display:none}
+  .pad,.why .copy{padding:64px 20px}
+  .hero{padding:80px 20px}
+  .parts{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
+  .stats{gap:28px}
+  .dark .term{font-size:11px}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <div class="kicker">Recipes for founders</div>
-  <h1>Build the growth tools you'd otherwise rent.</h1>
-  <p class="lede">Complete, working tools a founder can build in an afternoon with the Claude or ChatGPT subscription they already pay for. Each one runs on free tiers, ships with tests, and ends with how to get paid for what it brings in.</p>
-  <ul class="how">
-    <li><b>Not a prompt list</b>System design, the prompts in build order, working code, and tests.</li>
-    <li><b>Used on a real business</b>Every recipe is rewritten from tools that run a live product today.</li>
-    <li><b>Ends in revenue</b>The last step wires in Dodo Payments: checkout, subscriptions, webhooks.</li>
-  </ul>
-</header>
+<header><div class="nav">
+  <a class="brand" href="#"><i>↗</i>Build it</a>
+  <nav class="links"><a href="#recipes">Recipes</a><a href="#how">How a recipe works</a><a href="#next">Coming next</a>
+  <a class="btn lime" href="https://dodopayments.com/?utm_source=recipes&amp;utm_medium=gallery&amp;utm_campaign=recipes-nav">Start with Dodo</a></nav>
+</div></header>
 
-<h2>The recipes</h2>
-<div class="grid">
-  <article class="card">
-    <div class="chips"><span class="chip">outreach</span><span class="chip">Vercel</span><span class="chip">Postgres</span></div>
-    <h3>Cold-email engine that sends in each person's morning</h3>
-    <p>Drafts you approve, sent one at a time at 9am in each recipient's own time zone, follow-ups in the same thread, and anyone who replied skipped automatically.</p>
-    <dl class="meta"><dt>Replaces</dt><dd>email sequencers, $40-100/mo</dd><dt>Runs on</dt><dd>free tiers + your mailbox</dd><dt>Tests</dt><dd>11</dd></dl>
-    <a class="btn" href="../recipes/cold-email-engine/">Read the recipe</a>
-  </article>
-  <article class="card">
-    <div class="chips"><span class="chip">ads</span><span class="chip">Remotion</span><span class="chip">React</span></div>
-    <h3>Video ad engine: one JSON file in, beat-synced ads out</h3>
-    <p>A hook, five shots and the facts behind every number. One command audits it, writes original music on the ad's tempo, and renders an MP4 per hook.</p>
-    <dl class="meta"><dt>Replaces</dt><dd>editor per variant, video tools $30-100/mo</dd><dt>Runs on</dt><dd>your laptop</dd><dt>Tests</dt><dd>6</dd></dl>
-    <a class="btn" href="../recipes/video-ad-engine/">Read the recipe</a>
-  </article>
-  <article class="card">
-    <div class="chips"><span class="chip">retention</span><span class="chip">Resend</span><span class="chip">webhooks</span></div>
-    <h3>The daily report email your customers actually open</h3>
-    <p>Each morning, what your product did for each paying customer yesterday. Never sent empty, gated on their Dodo subscription, one-click unsubscribe.</p>
-    <dl class="meta"><dt>Replaces</dt><dd>a dashboard nobody opens</dd><dt>Runs on</dt><dd>free tiers</dd><dt>Tests</dt><dd>7</dd></dl>
-    <a class="btn" href="../recipes/daily-report-email/">Read the recipe</a>
-  </article>
-</div>
-
-<h2>Every recipe has the same seven parts</h2>
-<div class="two">
-<div class="diagram">1  What you'll have at the end
-2  Who it's for, what it replaces
-3  System design: parts, where, cost
-4  Build it with your AI: the prompts
-5  Make it safe: the checks in code
-6  Charge for it with Dodo
-7  How it's used on a real business</div>
-<div>
-  <p style="margin-top:0">Part 5 is the one generic templates leave out. It's the list of things that went wrong when the tool ran for real: a mail search that matched every sender, a daily job that reported success while skipping customers, a number in an ad that drifted from the source. Each one is now a check in code, with a test.</p>
-  <p>Part 6 is why these tools exist. A cold email that converts needs a payment link; an ad needs a checkout that tells you which hook sold; a report is worth sending only to customers who pay.</p>
-</div>
-</div>
-
-<h2>Coming next</h2>
-<ul class="next">
-  <li>SEO landing pages with instant indexing<span>Pages that answer real searches, submitted to Bing, which ChatGPT search draws on, the minute they deploy.</span></li>
-  <li>New-customer alert and onboarding emails from a Dodo webhook<span>Know within a minute when someone pays, and what they signed up for.</span></li>
-  <li>AI-written content with a fact-checker in code<span>Generated copy that can't claim anything your source doesn't say.</span></li>
-</ul>
-
-<section class="dodo">
-  <h2>Why every recipe ends with Dodo Payments</h2>
-  <p>Dodo Payments is a merchant of record: it sells on your behalf, so sales tax, VAT and local payment methods are handled when your first customer abroad pays. For a founder building tools like these on an afternoon's budget, that's the difference between "I'll add billing later" and charging on day one.</p>
-  <a class="btn" href="https://dodopayments.com/?utm_source=recipes&amp;utm_medium=gallery&amp;utm_campaign=recipes-home">Start with Dodo Payments</a>
+<main class="frame">
+<section class="hero">
+  <span class="badge"><b>New</b> 3 recipes · 24 tests · MIT licensed</span>
+  <h1>Build the growth tools you'd otherwise rent</h1>
+  <p>Complete, working tools a founder can build in an afternoon with the Claude or ChatGPT they already pay for. Each runs on free tiers and ends with how to get paid for what it brings in.</p>
+  <div class="ctas"><a class="btn lime" href="#recipes">Browse the recipes</a><a class="btn ghost" href="#how">How a recipe works</a></div>
+  <div class="stats">
+    <div><b>$0</b><span>to run, on free tiers</span></div>
+    <div><b>1 afternoon</b><span>to build each one</span></div>
+    <div><b>$40-100</b><span>a month of tools replaced</span></div>
+  </div>
 </section>
 
-<footer>Written by the founder of Zipply, an AI job-search concierge that runs on these tools and takes payments through Dodo. Code is MIT licensed.</footer>
-</div>
+<section class="why">
+  <div class="copy">
+    <h2 class="two-tone">You're shipping a product.<span>Why are you renting your growth stack?</span></h2>
+    <p>Sequencers, video tools, reporting dashboards: each is a monthly bill for something your AI can now help you build, own, and change in an hour. These recipes are the builds, written from tools running a real business.</p>
+  </div>
+  <div class="bars">
+    <a class="bar" style="background:var(--green)" href="#r1"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Outreach<small>cold-email engine</small></a>
+    <a class="bar" style="background:var(--blue)" href="#r2"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="m10.5 9 4 3-4 3z" fill="#fff"/></svg>Ads<small>video ad engine</small></a>
+    <a class="bar" style="background:var(--red)" href="#r3"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 4h16v12H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>Retention<small>daily report email</small></a>
+    <a class="bar" style="background:var(--orange)" href="#how"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>Billing<small>every recipe, via Dodo</small></a>
+  </div>
+</section>
+
+<section class="pad" id="recipes">
+  <div class="head"><h2>The recipes</h2><p>System design, the prompts in build order, working code with tests, and the checks that came from running it for real.</p></div>
+  <div class="cards">
+    <article class="card" id="r1">
+      <div class="vis g"><div class="term"><span class="d">$</span> node scripts/queue.mjs oct-13.json
+<span class="v">08:00Z</span>  09:00 Europe/London    di@
+<span class="v">14:00Z</span>  09:00 America/Chicago  ana@
+<span class="v">14:15Z</span>  09:15 America/Chicago  bo@
+<span class="v">16:00Z</span>  09:00 America/Phoenix  cy@
+<span class="k">✓</span> 4 queued · replies skipped</div></div>
+      <div class="body">
+        <span class="tag" style="--c:var(--green)">Outreach</span>
+        <h3>Cold email that lands in each person's morning</h3>
+        <p>Approved drafts sent one at a time at 9am in each recipient's time zone, follow-ups in thread, anyone who replied skipped.</p>
+        <dl class="meta"><dt>Replaces</dt><dd>sequencers, $40-100/mo</dd><dt>Stack</dt><dd>Vercel · Postgres · Zoho or Resend</dd><dt>Tests</dt><dd>11</dd></dl>
+        <a class="more" href="../recipes/cold-email-engine/">Read the recipe →</a>
+      </div>
+    </article>
+    <article class="card" id="r2">
+      <div class="vis b"><div class="phone"><div class="w">Clients<br>paying <em>late?</em></div><div class="st">PAID</div></div></div>
+      <div class="body">
+        <span class="tag" style="--c:var(--blue)">Ads</span>
+        <h3>Video ads from one JSON file, cut on the beat</h3>
+        <p>A hook, five shots and a source for every number. One command audits it, writes original music, and renders an MP4 per hook.</p>
+        <dl class="meta"><dt>Replaces</dt><dd>an editor per variant</dd><dt>Stack</dt><dd>Remotion · React · Node</dd><dt>Tests</dt><dd>6</dd></dl>
+        <a class="more" href="../recipes/video-ad-engine/">Read the recipe →</a>
+      </div>
+    </article>
+    <article class="card" id="r3">
+      <div class="vis p"><div class="mail"><b>2 done for you yesterday</b><div class="s">Hi Ana, here's what Acme did.</div><ul><li>Published 3 scheduled posts</li><li>Replied to 2 tickets</li></ul><div class="s">Skipped 1: repeated Tuesday's</div></div></div>
+      <div class="body">
+        <span class="tag" style="--c:var(--red)">Retention</span>
+        <h3>The daily report your customers actually open</h3>
+        <p>What your product did for each paying customer yesterday, never sent empty, switched on and off by their Dodo subscription.</p>
+        <dl class="meta"><dt>Replaces</dt><dd>a dashboard nobody opens</dd><dt>Stack</dt><dd>Vercel cron · Resend · webhooks</dd><dt>Tests</dt><dd>7</dd></dl>
+        <a class="more" href="../recipes/daily-report-email/">Read the recipe →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="pad dark" id="how">
+  <div class="grid2">
+    <div>
+      <h2>Every recipe ends in a Dodo checkout.</h2>
+      <p>A cold email that converts needs a payment link. An ad needs a checkout that tells you which hook sold. A report is worth sending only to customers who pay. Dodo Payments is the merchant of record, so tax and local payment methods are handled from the first sale abroad.</p>
+      <ul class="parts">
+        <li><span>01</span>What you'll have at the end</li>
+        <li><span>02</span>Who it's for, what it replaces</li>
+        <li><span>03</span>System design and cost</li>
+        <li><span>04</span>The prompts, in build order</li>
+        <li><span>05</span>Make it safe: checks in code</li>
+        <li><span>06</span>Charge for it with Dodo</li>
+        <li><span>07</span>How it runs on a real business</li>
+      </ul>
+    </div>
+    <div class="term"><span class="d">// api/dodo-webhook.js · recipe 3</span>
+<span class="k">●</span> Verifying signature <span class="d">(Standard Webhooks)</span>
+<span class="k">●</span> <span class="v">subscription.active</span>     → reports on
+<span class="k">●</span> <span class="v">subscription.on_hold</span>    → reports paused
+<span class="k">●</span> <span class="v">subscription.renewed</span>    → reports on
+<span class="k">●</span> <span class="v">subscription.cancelled</span>  → on until paid_through
+<span class="k">●</span> <span class="v">subscription.expired</span>    → reports off
+
+<span class="k">✓</span> 7 tests passing</div>
+  </div>
+</section>
+
+<section class="pad" id="next">
+  <div class="head"><h2>Coming next</h2><p>Same seven parts, same rule: built and run on a live product first.</p></div>
+  <div class="next">
+    <div class="nx"><b>SEO pages with instant indexing</b><span>Pages that answer real searches, submitted to Bing, which ChatGPT search draws on, the minute they deploy.</span></div>
+    <div class="nx"><b>New-customer alert from a Dodo webhook</b><span>Know within a minute when someone pays, and what they signed up for.</span></div>
+    <div class="nx"><b>AI content with a fact-checker in code</b><span>Generated copy that can't claim anything your source doesn't say.</span></div>
+  </div>
+</section>
+
+<section class="pad final">
+  <h2>Build it this afternoon.<br>Charge for it tonight.</h2>
+  <p>Pick a recipe, open your AI, and follow the prompts in order.</p>
+  <div class="ctas"><a class="btn lime" href="#recipes">Browse the recipes</a><a class="btn ghost" href="https://dodopayments.com/?utm_source=recipes&amp;utm_medium=gallery&amp;utm_campaign=recipes-final">Start with Dodo Payments</a></div>
+</section>
+</main>
+
+<footer>
+  <span>Written by the founder of Zipply, a Dodo Payments merchant. Code is MIT licensed.</span>
+  <span>An independent project. Not affiliated with or endorsed by Dodo Payments.</span>
+</footer>
 </body>
 </html>
