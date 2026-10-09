@@ -1,0 +1,118 @@
+# Know the minute someone pays, and why they leave
+
+A Dodo Payments webhook that pings you in Slack, Discord or Telegram when someone buys, upgrades,
+fails a payment or cancels, with the cancellation reason they typed. It also starts and stops a
+short onboarding email sequence on its own.
+
+## 1. What you'll have at the end
+
+```
+New customer: Ana Diaz from US, $50.00/month.
+Ana Diaz changed plan to $99.00/month.
+Payment failed for Ana Diaz. Worth a personal note today, before they drift.
+Ana Diaz cancelled. Reason they gave: "too_expensive: Only need it in tax season"
+Ana Diaz is back on $50.00/month.
+```
+
+Run `npm run preview` to print these from sample events. A new customer also gets a welcome email
+at once, a "did you get your first result?" email on day 2, and one question on day 6. The sequence
+stops by itself if they cancel.
+
+## 2. Who it's for, and what it replaces
+
+Founders with their first paying customers, when every one of them matters and you want to hear
+about them before your dashboard does. It replaces checking the dashboard every morning, a paid
+onboarding-email tool, and finding out weeks later that someone left without anyone asking why.
+
+## 3. System design
+
+```
+Dodo webhook ─▶ api/dodo-webhook.js
+                 verify signature (Standard Webhooks) on the raw body
+                 seen this webhook id before? ─▶ stop (Dodo retries deliveries)
+                 classify the event:
+                   first subscription.active ─▶ "New customer" + schedule onboarding
+                   active again later        ─▶ "is back"
+                   on_hold / past_due / failed ─▶ "Payment failed"
+                   cancelled                 ─▶ alert with their reason + stop onboarding
+                   renewed                   ─▶ nothing (good news needs no ping)
+                 ─▶ Slack / Discord / Telegram
+
+Vercel cron, daily ─▶ api/send-onboarding.js ─▶ due steps, skip anyone who left ─▶ Resend
+```
+
+| Part | Where it runs | Cost |
+|---|---|---|
+| Tables | Neon or Supabase Postgres | free tier |
+| Webhook + daily cron | Vercel functions | free tier |
+| Alerts | Slack / Discord incoming webhook, or a Telegram bot | free |
+| Onboarding email | Resend | free up to 3,000 a month |
+
+## 4. Build it with your AI
+
+1. **Tables.** "Postgres tables for customers (email, name, Dodo customer and subscription ids,
+   status, first_paid_at, cancelled_at, unsubscribed_at), handled webhook ids, and onboarding
+   emails (one row per customer per step, unique on both)." → `schema.sql`
+2. **Classifier.** "A pure function that takes a Dodo subscription webhook and the customer row
+   we already have, and returns: what happened, the alert text (or none), and whether to start or
+   stop onboarding. First subscription.active is new, a later one is a return, renewals are quiet,
+   cancellations quote cancellation_feedback and cancellation_comment. Tests for each."
+   → `lib/events.mjs`
+3. **Money.** "Format Dodo's recurring_pre_tax_amount (smallest currency unit), currency and
+   payment_frequency_interval as '$50.00/month'." → `money()`
+4. **Webhook.** "A Vercel function: verify the Standard Webhooks signature on the raw body, insert
+   the webhook-id and stop if it existed, upsert the customer, send the alert, schedule or cancel
+   onboarding." → `api/dodo-webhook.js`
+5. **Alerts.** "Post a message to whichever of Slack, Discord and Telegram are configured; one
+   failing must not block the others." → `lib/notify.mjs`
+6. **Onboarding.** "Three short emails from the founder at day 0, 2 and 6, with placeholders; a
+   daily cron sends what is due and skips anyone cancelled or unsubscribed." → `lib/onboarding.mjs`,
+   `api/send-onboarding.js`
+
+### Run it
+
+```
+npm install && npm test
+npm run preview
+cp .env.example .env
+psql "$DATABASE_URL" -f schema.sql
+vercel deploy --prod
+```
+
+In the Dodo dashboard: Developer → Webhooks → add `https://<your-app>.vercel.app/api/dodo-webhook`
+for the `subscription.*` events, and put the signing key in `DODO_WEBHOOK_KEY`. Use **test mode**
+first: buy your own product with a test card and watch the alert arrive.
+
+## 5. Make it safe
+
+- **Handle each webhook once.** Dodo retries a delivery if your endpoint is slow or down, so the
+  same event can arrive twice. The webhook id goes into a table first; a repeat stops there.
+- **A returning customer is not a new one.** Only the first `subscription.active` per customer
+  starts onboarding, or a customer who pauses and comes back gets "Welcome!" again.
+- **Stop emailing people who left.** A cancellation marks their queued emails as skipped, and the
+  daily send checks again before every email.
+- **Verify the signature on the raw body**, before parsing it.
+- **Replies must reach a person.** Onboarding emails set `reply_to` to your own inbox: an email that
+  asks a question from a no-reply address is worse than none.
+- **Check your own payload.** Field names here follow Dodo's API reference; open the Event catalog
+  in your dashboard and compare one real test event before going live.
+
+## 6. Charge for it with Dodo
+
+This recipe is built on Dodo's subscription events, so it starts working the moment you sell with
+[Dodo Payments](https://dodopayments.com/?utm_source=recipes&utm_medium=gallery&utm_campaign=recipe-customer-alerts):
+
+- **Collect the reason at the source.** Dodo's subscription carries `cancellation_feedback` and
+  `cancellation_comment`, so the cancellation reason reaches you in the alert, not in a survey nobody
+  fills in.
+- **Act on failed payments.** `subscription.on_hold` and `subscription.past_due` arrive while there
+  is still time to help: a personal note often saves the customer before the subscription ends.
+- **Upgrades are signal too.** `subscription.plan_changed` tells you who is getting value. Those
+  are the customers to ask for a quote or a referral.
+
+## 7. Built and used at Zipply
+
+Zipply's own Dodo webhook already starts each new customer's first job search the moment they pay,
+and its founder gets a phone notification for every payment. What it lacked was the other half: a
+customer cancelled and nobody knew why until days later. This recipe is that missing half, written
+so any founder on Dodo can have both from day one.

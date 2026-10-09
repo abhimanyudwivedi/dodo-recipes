@@ -1,0 +1,9 @@
+{
+  "name": "customer-alerts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Know within a minute when someone pays, upgrades, fails a payment or cancels (with the reason they gave), and start their onboarding emails automatically. Driven by Dodo Payments webhooks.",
+  "scripts": { "test": "node --test test/*.test.mjs", "preview": "node scripts/preview.mjs" },
+  "dependencies": { "postgres": "^3.4.4", "standardwebhooks": "^1.0.0" }
+}
