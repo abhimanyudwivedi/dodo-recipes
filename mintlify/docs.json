@@ -1,0 +1,16 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Recipes preview",
+  "colors": { "primary": "#00160d", "light": "#c6fe1e", "dark": "#00160d" },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Recipes",
+        "groups": [
+          { "group": "Build it with your AI", "pages": ["recipes/overview", "recipes/cold-email-engine", "recipes/video-ad-engine", "recipes/daily-report-email", "recipes/customer-alerts"] }
+        ]
+      }
+    ]
+  }
+}

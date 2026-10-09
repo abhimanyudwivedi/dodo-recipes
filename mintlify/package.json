@@ -1,0 +1,1 @@
+{"name":"recipes-mintlify-preview","private":true,"type":"module","scripts":{"build":"node build.mjs","dev":"mint dev --port 3333"},"devDependencies":{"mint":"^4.2.994"}}

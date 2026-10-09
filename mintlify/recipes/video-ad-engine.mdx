@@ -1,0 +1,132 @@
+---
+title: "Video ad engine: one JSON file in, beat-synced vertical ads out"
+sidebarTitle: "Video ad engine"
+description: "Write your ad as a short JSON file: a hook, five or six shots, the numbers it shows and where each number came from. One command checks it, writes original music on the ad's own tempo, and renders an MP4 for every hook you want to test. Re-cutting an ad takes a minute, not an afternoon in an editor."
+icon: "clapperboard"
+---
+
+## What you'll have at the end
+
+```
+$ npm run render ads/example.json
+bed.wav 15.0 s at 120 BPM, plus pop, tick, stamp, whoosh, chime
+out/example-late.mp4     (link it with utm_content=late)
+out/example-chasing.mp4  (link it with utm_content=chasing)
+```
+
+Two 14-second 1080×1920 ads, identical except the first three seconds. Every cut, word and sound
+lands on the beat.
+
+## Who it's for, and what it replaces
+
+Founders running their own Meta, TikTok or YouTube Shorts ads who need a new variant every week.
+It replaces paying an editor per variant, or a template video tool (~$30-100 a month), and the
+music licence: the sound is synthesised, so there is nothing to license.
+
+## System design
+
+```
+ads/<name>.json ── hook words · shots · facts (value + source) · colours · BPM
+      │
+      ├─▶ audit        cuts on the beat? every number from "facts"? banned words? hook ≤ 5 words?
+      ├─▶ gen-audio    music bed at the ad's BPM + one sound per kind of on-screen event
+      └─▶ Remotion     one React component per graphic (words, counter, stamp, CTA)
+             └─▶ out/<name>-<hook>.mp4, one per hook
+```
+
+| Part | Where it runs | Cost |
+|---|---|---|
+| Remotion render | your laptop | free for individuals and small companies (check Remotion's licence for your size) |
+| Music and effects | `scripts/gen-audio.mjs` | free, nothing licensed |
+| Optional stills or clips | the AI subscription you already pay for (Gemini, ChatGPT) | included |
+
+## Build it with your AI
+
+
+
+<Steps>
+  <Step title="Shot sheet">
+    "Write a 14-second vertical ad for [product] as JSON: 2-4 hook variants of at most five words, each naming the viewer's problem in their words; then shots of 2-6 beats at 120 BPM, each with one line and one graphic (words, counter, stamp, cta). Numbers only from a facts object with a source per number."
+
+    **Produces:** `ads/<name>.json`
+  </Step>
+  <Step title="Beat grid">
+    "Frames per beat from BPM and fps; each shot's start frame from the running beat count; the total length. Tests: 120 BPM at 30 fps is 15 frames a beat."
+
+    **Produces:** `src/timing.mjs`
+  </Step>
+  <Step title="Audit">
+    "Before rendering, list every problem: off-beat cuts, a line without a graphic, a number on screen that is not in facts, a counter whose line disagrees with its fact, em dashes, exclamation marks, 'guaranteed'. Exit non-zero if any."
+
+    **Produces:** `src/audit.mjs`
+  </Step>
+  <Step title="Scenes">
+    "Remotion components: words that land one per beat, a counter that counts up over two beats with ticks, a stamp that slams on the second beat, a closing card. Each event plays exactly one sound."
+
+    **Produces:** `src/Ad.tsx`
+  </Step>
+  <Step title="Sound">
+    "In plain Node, synthesise a four-chord music bed at a given BPM and short effects (pop, tick, stamp, whoosh, chime) as WAV files."
+
+    **Produces:** `scripts/gen-audio.mjs`
+  </Step>
+  <Step title="Variants">
+    "Render one MP4 per hook, changing only the first shot."
+
+    **Produces:** `scripts/render.mjs`
+  </Step>
+</Steps>
+
+### Run it
+
+```
+npm install && npm test
+npm run audit ads/example.json
+npm run render ads/example.json     # first run downloads a headless Chrome (~90 MB)
+npm run studio                      # edit live in the browser
+```
+
+## Make it safe
+
+
+
+<AccordionGroup>
+  <Accordion title="Numbers come from one place">
+    Every number on screen comes from `facts`, each with a source. The audit fails if a line says 50 and the counter shows 41. Ads that show results you can't prove are how ad accounts get restricted, and how trust gets lost.
+  </Accordion>
+  <Accordion title="Never show a result you haven't measured">
+    "Clients paying late?" is a question; "Get paid in 3 days" is a promise. The audit blocks "guarantee"; you still have to read every line.
+  </Accordion>
+  <Accordion title="Employment, housing, credit and finance ads are special categories">
+    on Meta: declare the category and avoid outcome claims.
+  </Accordion>
+  <Accordion title="Label AI footage">
+    if you composite generated stills or clips, and never present an AI person as a real customer.
+  </Accordion>
+  <Accordion title="Test one variant before batching">
+    Render one hook, watch it with sound on, then render the rest.
+  </Accordion>
+</AccordionGroup>
+
+## Charge for it with Dodo
+
+<Tip>
+**Every recipe ends here.** Dodo is the merchant of record, so tax and payment methods abroad are handled from the first sale.
+</Tip>
+
+An ad that gets views but no sales hasn't been measured yet. Point each variant's button at a
+[Dodo Payments](https://dodopayments.com/?utm_source=recipes&utm_medium=gallery&utm_campaign=recipe-video-ads)
+checkout and you see which hook sells, not just which one gets watched:
+
+- One [payment link](https://docs.dodopayments.com/changelog/v1.70.0.md) or
+  [Checkout Session](https://docs.dodopayments.com/developer-resources/checkout-session.md) per
+  product, with the hook id carried through (`utm_content=late`), so each sale traces back to the
+  first three seconds that earned it.
+- Selling worldwide from day one: Dodo is the merchant of record, so tax and local payment
+  methods are handled when the ad reaches a new country.
+
+## Built and used at Zipply
+
+Zipply's video ads are made this way: Remotion scenes on a beat grid, sound synthesised in code,
+one sound per on-screen event, and hook variants that change only the opening. This recipe is the
+generic version, with the audit that keeps the numbers on screen honest.
