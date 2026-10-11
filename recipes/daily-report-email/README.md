@@ -73,6 +73,12 @@ Vercel cron, daily ─▶ api/daily-report.js
 
 ### Run it
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fabhimanyudwivedi%2Fdodo-recipes&root-directory=recipes%2Fdaily-report-email&project-name=daily-report-email&env=DATABASE_URL%2CCRON_SECRET%2CAPP_URL%2CPRODUCT_NAME%2CMAIL_FROM%2CRESEND_API_KEY%2CUNSUBSCRIBE_SECRET%2CDODO_WEBHOOK_KEY&envDescription=Database%2C+Resend%2C+an+unsubscribe+secret+and+your+Dodo+webhook+signing+key.&envLink=https%3A%2F%2Fgithub.com%2Fabhimanyudwivedi%2Fdodo-recipes%2Fblob%2Fmain%2Frecipes%2Fdaily-report-email%2F.env.example)
+
+Deploys to **your own** Vercel account; you'll be asked for the environment variables above. Then run `schema.sql` on your database and add the webhook or cron as below.
+
+Or by hand:
+
 ```
 npm install && npm test
 cp .env.example .env

@@ -1,0 +1,9 @@
+{
+  "name": "build-it-recipes",
+  "description": "Build complete growth tools with your own AI: a cold-email engine that sends in each person's morning, a beat-synced video ad engine, a daily report email, and customer alerts from Dodo Payments webhooks. Each recipe ends with charging through Dodo Payments.",
+  "version": "0.1.0",
+  "author": { "name": "Abhimanyu Dwivedi" },
+  "homepage": "https://abhimanyudwivedi.github.io/dodo-recipes/",
+  "repository": "https://github.com/abhimanyudwivedi/dodo-recipes",
+  "license": "MIT"
+}

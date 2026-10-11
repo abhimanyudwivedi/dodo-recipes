@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "build-it-recipes",
+  "description": "Complete growth-tool recipes for founders, built with your own AI and paid for through Dodo Payments.",
+  "owner": { "name": "Abhimanyu Dwivedi" },
+  "plugins": [
+    {
+      "name": "build-it-recipes",
+      "description": "Four recipes as skills: cold-email engine, video ad engine, daily report email, customer alerts from Dodo webhooks.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

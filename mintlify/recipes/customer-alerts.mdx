@@ -88,6 +88,12 @@ Vercel cron, daily ─▶ api/send-onboarding.js ─▶ due steps, skip anyone w
 
 ### Run it
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fabhimanyudwivedi%2Fdodo-recipes&root-directory=recipes%2Fcustomer-alerts&project-name=customer-alerts&env=DATABASE_URL%2CDODO_WEBHOOK_KEY%2CCRON_SECRET%2CRESEND_API_KEY%2CMAIL_FROM%2CREPLY_TO&envDescription=Database%2C+Dodo+webhook+signing+key%2C+Resend%3B+alert+channels+%28Slack%2FDiscord%2FTelegram%29+are+optional%2C+see+.env.example.&envLink=https%3A%2F%2Fgithub.com%2Fabhimanyudwivedi%2Fdodo-recipes%2Fblob%2Fmain%2Frecipes%2Fcustomer-alerts%2F.env.example)
+
+Deploys to **your own** Vercel account; you'll be asked for the environment variables above. Then run `schema.sql` on your database and add the webhook or cron as below.
+
+Or by hand:
+
 ```
 npm install && npm test
 npm run preview

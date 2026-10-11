@@ -81,6 +81,12 @@ folder are what they produced for us, so you can compare.
 
 ### Run it
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fabhimanyudwivedi%2Fdodo-recipes&root-directory=recipes%2Fcold-email-engine&project-name=cold-email-engine&env=DATABASE_URL%2CCRON_SECRET%2CMAIL_FROM%2CMAIL_PROVIDER&envDescription=Database%2C+cron+secret+and+mail+provider.+Provider+keys+%28Zoho+or+Resend%29+are+listed+in+.env.example.&envLink=https%3A%2F%2Fgithub.com%2Fabhimanyudwivedi%2Fdodo-recipes%2Fblob%2Fmain%2Frecipes%2Fcold-email-engine%2F.env.example)
+
+Deploys to **your own** Vercel account; you'll be asked for the environment variables above. Then run `schema.sql` on your database and add the webhook or cron as below.
+
+Or by hand:
+
 ```
 npm install
 cp .env.example .env            # fill it in
@@ -144,7 +150,7 @@ which acts as merchant of record, so sales tax and VAT are handled for you:
   sign-up, the [subscription guide](https://docs.dodopayments.com/developer-resources/subscription-integration-guide.md)
   for monthly billing, and a webhook that turns sending on only while the subscription is active.
 
-Try it with a test-mode link first: &lt;!-- TODO: test-mode Dodo payment link -->
+Try it in test mode first: create a payment link in your Dodo dashboard's test mode and pay it with a test card, so you see the whole path before any real money moves.
 
 ## Built and used at Zipply
 
